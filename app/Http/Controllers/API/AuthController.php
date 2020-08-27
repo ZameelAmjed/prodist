@@ -64,6 +64,10 @@ class AuthController extends ResponseController
 		    return $this->sendError($validator->errors());
 	    }
 	    $electrician = Electrician::create($request->all());
+
+	    //new member code
+	    $electrician->setMemberCode();
+
 	    $token = auth('api')->login($electrician);
 	    return $this->respondWithToken($token);
     }

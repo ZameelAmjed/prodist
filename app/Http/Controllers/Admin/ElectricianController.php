@@ -73,6 +73,8 @@ class ElectricianController extends Controller
 
         $electrician = Electrician::create($request->all());
 
+	    $electrician->setMemberCode();
+
         if(isset($electrician) && $request->file('photo'))
         {
 	        $imageName = time().$electrician->id.'.jpg';
@@ -80,6 +82,7 @@ class ElectricianController extends Controller
 	        $electrician->photo = $imageName;
 	        $electrician->save();
         }
+
 
         return redirect()->route('admin.electrician.show',$electrician)->with('message',"$electrician->name ".trans('global.is_created'));
     }

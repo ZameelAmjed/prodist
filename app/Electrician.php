@@ -83,14 +83,17 @@ class Electrician extends Authenticatable implements  JWTSubject
 		}
 	}
 
-	/*public function setDateOfBirthAttribute($value){
-		$nic = $this->attributes['nic'];
-		if(empty($value) && $nic){
-			$this->attributes['date_of_birth'] = Helper::getdateofbirthfromnic($nic);
-		}else{
-			$this->attributes['date_of_birth'] = $value;
+	/**
+	 * @param $value
+	 * Set Membership Id
+	 */
+	public function setMemberCode(){
+		if(empty($this->member_code)){
+			$code = strtoupper(substr($this->province,0,3));
+			$this->member_code = $code.str_pad($this->id,6,0,STR_PAD_LEFT);
+			$this->save();
 		}
-	}*/
+	}
 
 	public function getDateOfBirthAttribute($value){
 		return date('Y-m-d', strtotime($value));
