@@ -46,8 +46,9 @@ class ImportLocation extends Command
     public function handle()
     {
 	    $queueRegion = $this->option('updateregion');
+	    $queueCode = $this->option('updatecode');
 
-        if($this->options('updatecode')==1){
+        if($queueCode==1){
 	        $this->alert('Updating Region Codes from JSON');
 	        $file = $this->ask('Enter json file name in public directory?');
 	        while(!file_exists(public_path($file))){
