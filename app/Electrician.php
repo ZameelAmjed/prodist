@@ -7,6 +7,7 @@ use DateTime;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
@@ -89,8 +90,12 @@ class Electrician extends Authenticatable implements  JWTSubject
 	 */
 	public function setMemberCode(){
 		if(empty($this->member_code)){
-			$code = strtoupper(substr($this->province,0,3));
-			$this->member_code = $code.str_pad($this->id,6,0,STR_PAD_LEFT);
+			$data = DB::connection( 'mongodb' )
+			          ->collection( 'area' )
+			          ->where( '_id','like', "%{$this->city}%")
+			          ->get();
+			$code = isset($data[0]) ? $data[0]['code'] : 'UNK';
+			$this->member_code = $code.'/'.str_pad($this->id,6,0,STR_PAD_LEFT);
 			$this->save();
 		}
 	}

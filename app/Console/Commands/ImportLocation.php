@@ -45,7 +45,9 @@ class ImportLocation extends Command
      */
     public function handle()
     {
-        if($this->options('updatecode')){
+	    $queueRegion = $this->option('updateregion');
+
+        if($this->options('updatecode')==1){
 	        $this->alert('Updating Region Codes from JSON');
 	        $file = $this->ask('Enter json file name in public directory?');
 	        while(!file_exists(public_path($file))){
@@ -58,7 +60,7 @@ class ImportLocation extends Command
 		        DB::connection( 'mongodb' )->collection( 'area' )
 		          ->where("_id",$key)->update(['code'=>$val]);
 	        }
-        }elseif($this->options('updateregion')){
+        }elseif($queueRegion==1){
 	        $this->alert('Updating Region for cities from JSON');
 	        $file = $this->ask('Enter json file name in public directory?');
 	        while(!file_exists(public_path($file))){

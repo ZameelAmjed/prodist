@@ -7,7 +7,6 @@ use App\Electrician;
 use App\Http\Controllers\Exports\EleImp;
 use App\Http\Requests\Admin\StoreElectricianRequest;
 use App\Http\Requests\Admin\UpdateElectricianRequest;
-use App\Setuprepo;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -16,6 +15,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use Image;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 class ElectricianController extends Controller
 {
