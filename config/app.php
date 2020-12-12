@@ -12,7 +12,20 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Chint Loyalty Rewards System',
+    'name' => env('APP_NAME'),
+
+	/**
+	 * APP COMPANY INFORMATION
+	 */
+
+    'company_name' => env('APP_COMPANY','PRODIST DISTRIBUTIONS'),
+    'company_address_block' => env('APP_COMPANY_ADDRESS_BLOCK','block'),
+    'company_address_street' => env('APP_COMPANY_ADDRESS_STREET','Street'),
+    'company_address_city' => env('APP_COMPANY_ADDRESS_CITY','City'),
+    'company_telephone' => env('APP_COMPANY_TELEPHONE','0000000000'),
+    'company_tax_id' => env('APP_COMPANY_TAX_ID','TAX0000000'),
+    'company_email' => env('APP_COMPANY_EMAIL','contact@samplemail.com'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -137,7 +150,16 @@ return [
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
+
+	/*
+	 * ID Default Values
+	 */
+    'po_prefix' => env('PO_PREFIX', 'PO'),
+    'order_prefix' => env('ORDER_PREFIX', 'ORD'),
+    'invoice_prefix' => env('INVOICE_PREFIX', 'INV'),
     /*
+     *
+     *
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------

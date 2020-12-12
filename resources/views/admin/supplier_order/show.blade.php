@@ -104,8 +104,8 @@
                             <th class="text-center">Expiry Date</th>
                             <th class="text-center">Requested Units</th>
                             <th class="text-center">Received Units</th>
-                            <th class="text-center">Unit Price</th>
-                            <th class="text-center">Total Price</th>
+                            <th class="text-right">Unit Price</th>
+                            <th class="text-right">Total Price</th>
                         </tr>
                         @foreach($supplierOrder->supplierOrderItems as $item)
                             <tr>

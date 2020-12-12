@@ -8,16 +8,11 @@
  */
 
 namespace App\Http\Controllers\API;
-
-use App\Electrician;
-use App\Http\Requests\Admin\StoreElectricianRequest;
+use App\Store;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ResponseController as ResponseController;
-use Illuminate\Support\Facades\Auth;
-use App\User;
-
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWTAuth;
 use Validator;
 
 
@@ -27,7 +22,8 @@ class AuthController extends ResponseController
 	use AuthenticatesUsers;
 	public function __construct()
 	{
-		$this->middleware('auth:api', ['except' => ['login','signup']]);
+		$this->middleware('auth:api',
+			['except' => ['login','signup']]);
 	}
     //login
     public function login(Request $request)
@@ -41,7 +37,7 @@ class AuthController extends ResponseController
 		    return $this->sendError($validator->errors());
 	    }
 
-	    $electrician = Electrician::where('nic','=',$request->input('nic'))->where('telephone','=',$request->input('telephone'))->first();
+	    $electrician = Store::where('nic','=',$request->input('nic'))->where('telephone','=',$request->input('telephone'))->first();
 		if(!$electrician){
 			return $this->sendError(['error' => 'Unauthorized']);
 		}
@@ -63,7 +59,7 @@ class AuthController extends ResponseController
 	    if($validator->fails()){
 		    return $this->sendError($validator->errors());
 	    }
-	    $electrician = Electrician::create($request->all());
+	    $electrician = Store::create($request->all());
 
 	    //new member code
 	    $electrician->setMemberCode();
@@ -83,6 +79,17 @@ class AuthController extends ResponseController
 		auth('api')->logout();
 
 		return response()->json(['message' => 'Successfully logged out']);
+	}
+
+	/**
+	 * Refresh a token.
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function refresh()
+	{
+		$token = auth('api')->refresh();
+		return $this->respondWithToken($token);
 	}
 
 	/**

@@ -4,7 +4,12 @@
 //@import "~tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css";
 // Variables
 @import "variables";
+//Vue Modal
+@import "modalstyle";
 
+.form-inline-block{
+  display: inline-block !important;
+}
 .toast-message{
    font-size: initial;
 }
@@ -19,6 +24,10 @@
 .sidebar .nav-link .nav-icon{
   height: 20px;
   width: 2rem;
+}
+.sidebar .nav-link .nav-icon-sub{
+  height: 10px;
+  width: 1.2rem;
 }
 .logo-header {
   height: 40px;

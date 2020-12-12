@@ -64,37 +64,9 @@
         @include('partials.menu')
         <main class="main">
 
-
             <div style="padding-top: 20px" class="container-fluid">
                 @yield('content-buttons')
-                {{--@if(session('message'))
-                    <div class="row mb-2">
-                        <div class="col-lg-12">
-                            <div class="alert alert-success" role="alert">{{ session('message') }}</div>
-                        </div>
-                    </div>
-                @endif--}}
-               {{-- @if($errors->count() > 0)
-                    <div class="alert alert-danger">
-                        <ul class="list-unstyled">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif--}}
-                {{--@if (session('success'))
-                    <div class="alert alert-success alert-dismissable mr-0 ml-0">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                         {{ session('success') }}
-                    </div>
-                @endif--}}
-                {{--@if (session('alert'))
-                    <div class="alert alert-danger alert-dismissable mr-0 ml-0">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ session('alert') }}
-                    </div>
-                @endif--}}
+
                 @yield('content')
 
             </div>
@@ -118,6 +90,19 @@
             @if(session('message'))
                 toastr.success('{{ session('message') }}');
             @endif
+
+            function confirmSubmit(event){
+                toastr.info("Please reconfirm your action?<br /><button type='button' id='confirmationRevertYes' class='btn btn-info btn-sm'>Yes</button>",'',
+                    {
+                        closeButton: false,
+                        allowHtml: true,
+                        onShown: function (toast) {
+                            $("#confirmationRevertYes").click(function(){
+                                event.submit();
+                            });
+                        }
+                    });
+            }
         </script>
     </div>
 

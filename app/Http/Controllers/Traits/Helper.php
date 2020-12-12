@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
-use App\Dealers;
+
 use Illuminate\Support\Facades\DB;
 
 trait Helper {

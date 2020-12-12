@@ -23,11 +23,9 @@ class StoreProductsRequest extends FormRequest
     public function rules()
     {
         return [
-        	'product_name'=>'required',
-        	'model'=>'required',
-        	'description'=>'required',
-        	'points'=>'required|numeric',
-	        'textcode'=>'max:2|alpha'
+        	'name'=>'required',
+        	'supplier_id'=>'required',
+        	'brand'=>'required',
         ];
     }
 }

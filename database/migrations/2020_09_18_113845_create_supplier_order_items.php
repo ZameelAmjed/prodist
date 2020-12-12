@@ -21,8 +21,8 @@ class CreateSupplierOrderItems extends Migration
 	        $table->date('expiry_date')->nullable();
 	        $table->integer('received_units')->default(0);
 	        $table->integer('unit_price')->nullable();
-	        $table->double('discount')->nullable();
 	        $table->integer('total_price')->nullable();
+            $table->integer('discount')->nullable();
             $table->timestamps();
         });
     }

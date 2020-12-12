@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers\Exports;
-use App\Electrician;
+use App\Store;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -15,7 +15,7 @@ foreach ($row as $key=>$val){
 	$row[$key] = strtolower(trim($val));
 }
 
-return new Electrician([
+return new Store([
 	'name'=>ucwords(preg_replace('/\./m','. ',$row['name'])),
 	'nic'=>str_replace(' ','',trim($row['nic'])),
 	'telephone'=>$row['telephone'],

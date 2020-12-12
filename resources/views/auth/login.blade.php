@@ -15,8 +15,8 @@
                         <div class="">
 
                         </div>
-                        <img src="{{asset('images/logo.png')}}" class="mx-auto d-block logo-login">
-                        <h1 class="text-center">Chint Loyalty Rewards System</h1>
+                        <img src="{{asset('images/logo300.png')}}" class="mx-auto d-block logo-login">
+                        <h1 class="text-center">{{config('app.name','Distribution Management System')}}</h1>
                         <p class="text-muted text-center">Administrator Login</p>
 
                         <div class="input-group mb-3">

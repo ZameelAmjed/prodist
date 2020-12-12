@@ -7,8 +7,11 @@ use App\Http\Controllers\Traits\ProductTrait;
 use App\Http\Requests\Admin\StoreProductsRequest;
 use App\Http\Requests\Admin\UpdateProductsRequest;
 use App\Product;
+use App\Supplier;
+use App\SupplierOrder;
 use App\User;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
@@ -36,15 +39,23 @@ class ProductsController extends Controller
             return abort(401);
         }
 
-        $products = Product::paginate(20);
-	    if($request->get('model',false)){
-		    $product = Product::where('model', '=', $request->get('model'))->first();
-		    if(isset($product)){
-			    return redirect()->route('admin.products.show', $product);
-		    }else{
-			    return view('admin.products.index', compact('products'))->withErrors(['model' => ['Product Not Found']]);
-		    }
-	    }
+        $productsQuery = Product::select();
+
+        if(request('search') && request('supplier')){
+	        $productsQuery = $productsQuery
+		        ->join('suppliers','products.supplier_id','suppliers.id')
+		        ->select('products.*')
+		        ->where(function($q){
+			        $q->where('suppliers.name','like','%'.request('search').'%');
+		        });
+        }elseif (request('search')){
+	        $productsQuery = $productsQuery
+		        ->where('name','like','%'.request('search').'%')
+		        ->orWhere('brand','like','%'.request('search').'%');
+        }
+
+		$products = $productsQuery->paginate(15);
+
         return view('admin.products.index', compact('products'));
     }
 
@@ -60,7 +71,9 @@ class ProductsController extends Controller
         }
         $roles = Role::get()->pluck('name', 'name');
 
-        return view('admin.products.create', compact('roles'));
+        $suppliers = Supplier::all();
+
+        return view('admin.products.create', compact('roles','suppliers'));
     }
 
 	public function store(StoreProductsRequest $request)
@@ -71,7 +84,7 @@ class ProductsController extends Controller
 
 		$product = Product::create($request->all());
 
-		return redirect()->route('admin.products.show',[$product->id])->with('message',"$product->product_name ".trans('global.is_created'));
+		return redirect()->route('admin.products.show',[$product->id])->with('message',"$product->name ".trans('global.is_created'));
 	}
 
 
@@ -109,8 +122,8 @@ class ProductsController extends Controller
         if (! Gate::allows('users_manage')) {
             return abort(401);
         }
-
-        return view('admin.products.edit', compact('product'));
+	    $suppliers = Supplier::all();
+        return view('admin.products.edit', compact('product','suppliers'));
     }
 
     /**
@@ -128,7 +141,7 @@ class ProductsController extends Controller
 
         $product->update($request->all());
 
-        return back()->with('message',"$product->product_name ". trans('global.is_updated'));
+        return back()->with('message',"$product->name ". trans('global.is_updated'));
     }
 
     public function show(Product $product)
@@ -137,7 +150,11 @@ class ProductsController extends Controller
             return abort(401);
         }
 
-	    return view('admin.products.show', compact('product'));
+	    $pendingSupplierOrders = SupplierOrder::where('status',\App\SupplierOrder::pending)->get();
+
+	    $completedSupplierOrders = SupplierOrder::where('status',\App\SupplierOrder::complete)->get();
+
+	    return view('admin.products.show', compact('product','pendingSupplierOrders','completedSupplierOrders'));
     }
 
     /**
@@ -151,7 +168,7 @@ class ProductsController extends Controller
     	//If nothing under this is available delete
         $product->delete();
 
-        return redirect()->route('admin.products.index')->with('alert',"$product->product_name ".trans('global.is_deleted'));
+        return redirect()->route('admin.products.index')->with('alert',"$product->name ".trans('global.is_deleted'));
     }
 
     /**
@@ -168,38 +185,6 @@ class ProductsController extends Controller
 
         return response()->noContent();
     }
-
-	public function printCode(Product $product, Request $request)
-	{
-		if (! Gate::allows('users_manage')) {
-			return abort(401);
-		}
-
-		$request->validate([
-			'start' => 'numeric|min:1',
-			'end' => 'numeric|gt:start',
-		]);
-
-		if(($request->input('end')-$request->input('start')) >= $product->units_issued){
-			return back()->withErrors(['end' => ["Only $product->units_issued product units issued"]]);
-		}
-
-
-		$attr = $request->all();
-
-		if($attr['type']==='pdf'){
-			if(($request->input('end')-$request->input('start')) >= 500){
-				//error exceeding 500 range
-				return back()->withErrors(['end' => ['Maximum range allowed is 500']]);
-			}
-			//return view('admin.products.pdf', compact('product','attr'));
-			$pdf =  PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('admin.products.pdfe', compact('product','attr'))->setPaper('a4', 'portrait');
-			return $pdf->download($product->product_name.'-'.$product->model.'-'.$request->input('start').'-'.$request->input('end').'.pdf');
-		}else{
-			return Excel::download(new BarcodeExport($product, $request->input('start'), $request->input('end')), $product->product_name.'-'.$product->model.'-'.$request->input('start').'-'.$request->input('end').'.xlsx');
-		}
-
-	}
 
 
 

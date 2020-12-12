@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Requests\Admin;
 
-use App\Dealers;
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateElectricianRequest extends FormRequest

@@ -71,7 +71,7 @@ return [
         ],
         'electrician' => [
 	        'driver' => 'eloquent',
-	        'model' => App\Electrician::class,
+	        'model' => App\Store::class,
         ]
 
         // 'users' => [

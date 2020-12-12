@@ -15,86 +15,45 @@
         <form action="{{ route("admin.products.update", [$product->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="form-group {{ $errors->has('product_name') ? 'has-error' : '' }}">
+            <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                 <label for="name">{{ trans('cruds.products.fields.name') }}*</label>
-                <input type="text" id="product_name" name="product_name" class="form-control" value="{{ old('product_name', isset($product) ? $product->product_name : '') }}" required>
-                @if($errors->has('product_name'))
+                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($product) ? $product->name : '') }}" required>
+                @if($errors->has('name'))
                     <em class="invalid-feedback">
-                        {{ $errors->first('product_name') }}
+                        {{ $errors->first('name') }}
                     </em>
                 @endif
                 <p class="helper-block">
                     {{ trans('cruds.products.fields.name_helper') }}
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('model') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.products.fields.model') }}</label>
-                <input readonly type="text" id="model" name="model" class="form-control" value="{{ old('model', isset($product) ? $product->model : '') }}" required>
-                @if($errors->has('model'))
+            <div class="form-group {{ $errors->has('brand') ? 'has-error' : '' }}">
+                <label for="name">{{ trans('cruds.products.fields.brand') }}</label>
+                <autocomplete ref="autocomplete"
+                              source="{{url('api/getbrands')}}?name="
+                              input-class="form-control"
+                              initial-display="{{ old('brand', isset($product) ? $product->brand : '') }}"
+                              initial-value="{{ old('brand', isset($product) ? $product->brand : '') }}"
+                              results-value="brand"
+                              results-display="brand"
+                              clear-button-icon=""
+                              placeholder="type to search"
+                              name="brand"
+                              id="brand"
+                ></autocomplete>
+                @if($errors->has('brand'))
                     <em class="invalid-feedback">
-                        {{ $errors->first('model') }}
+                        {{ $errors->first('brand') }}
                     </em>
                 @endif
-                <p class="helper-block">
-                    {{ trans('cruds.products.fields.name_helper') }}
-                </p>
             </div>
-            <div class="form-group {{ $errors->has('category') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.products.fields.category') }}</label>
-                <input type="text" id="category" name="category" class="form-control" value="{{ old('category', isset($product) ? $product->category : '') }}" required>
-                @if($errors->has('category'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('category') }}
-                    </em>
-                @endif
-            </div>
-            <div class="form-group {{ $errors->has('series') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.products.fields.series') }}</label>
-                <input type="text" id="series" name="series" class="form-control" value="{{ old('series', isset($product) ? $product->series : '') }}" required>
-                @if($errors->has('series'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('series') }}
-                    </em>
-                @endif
-                <p class="helper-block">
-                    {{ trans('cruds.products.fields.name_helper') }}
-                </p>
-            </div>
-            <div class="form-group {{ $errors->has('textcode') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.products.fields.textcode') }}</label>
-                <input readonly type="text" id="textcode" name="textcode" class="form-control" value="{{ old('textcode', isset($product) ? $product->textcode : '') }}" required>
-                @if($errors->has('textcode'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('textcode') }}
-                    </em>
-                @endif
-                <p class="helper-block">
-                    {{ trans('cruds.products.fields.name_helper') }}
-                </p>
-            </div>
-            <div class="form-group {{ $errors->has('description') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.products.fields.description') }}</label>
-                <input type="text" id="description" name="description" class="form-control" value="{{ old('description', isset($product) ? $product->description : '') }}" required>
-                @if($errors->has('description'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('description') }}
-                    </em>
-                @endif
-                <p class="helper-block">
-                    {{ trans('cruds.products.fields.name_helper') }}
-                </p>
-            </div>
-            <div class="form-group {{ $errors->has('points') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.products.fields.points') }}</label>
-                <input type="number" step="0.01" id="points" name="points" class="form-control" value="{{ old('points', isset($product) ? $product->points : '') }}" required>
-                @if($errors->has('points'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('points') }}
-                    </em>
-                @endif
-                <p class="helper-block">
-                    {{ trans('cruds.products.fields.name_helper') }}
-                </p>
+            <div class="form-group {{ $errors->has('supplier_id') ? 'has-error' : '' }}">
+                <label for="supplier_id">{{ trans('cruds.products.fields.supplier') }}</label>
+                <select name="supplier_id" class="form-control">
+                    @foreach($suppliers as $supplier)
+                        <option value="{{$supplier->id}}" {{($supplier->id==$product->supplier_id)?'selected':''}}>{{$supplier->name}}</option>
+                    @endforeach
+                </select>
             </div>
             <div>
                 <input class="btn btn-danger" type="submit" value="{{ trans('global.save') }}">

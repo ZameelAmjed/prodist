@@ -8,12 +8,8 @@
  */
 namespace App\Http\Controllers\API;
 
-use App\Electrician;
 use App\Http\Controllers\Controller as Controller;
-use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Facades\JWTFactory;
-use Tymon\JWTAuth\JWTGuard;
+
 
 
 class ResponseController extends Controller

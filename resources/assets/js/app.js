@@ -1,6 +1,8 @@
 import VueBarcodeScanner from 'vue-barcode-scanner';
 import { CChartBar } from '@coreui/coreui-vue-chartjs'
 import Autocomplete from 'vuejs-auto-complete'
+import { Form, HasError, AlertError } from 'vform'
+
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -10,14 +12,7 @@ import Autocomplete from 'vuejs-auto-complete'
 require('./bootstrap');
 
 window.Vue = require('vue');
-/*window.datetimepicker = require('tempusdominus-bootstrap-4')($);
 
-$('.date').datetimepicker({
-    format: 'YYYY-MM-DD',
-    viewMode: 'years',
-    locale: 'en',
-    sideBySide: true
-})*/
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -31,8 +26,20 @@ Vue.component('AutoInput', require('./components/auto-input.vue').default);
 Vue.component('auto-city', require('./components/auto-city.vue').default);
 Vue.component('auto-bank', require('./components/auto-bank.vue').default);
 Vue.component('auto-sales-demographics', require('./components/auto-sales-demographics.vue').default);
+Vue.component('products-supplier-order', require('./components/products-supplier-order.vue').default);
+Vue.component('create-order', require('./components/create-order.vue').default);
+Vue.component('edit-order', require('./components/edit-order.vue').default);
+Vue.component('grn-items-update', require('./components/grn-items-update.vue').default);
 Vue.component('CChartBar', CChartBar);
+Vue.component('modal', require('./components/modal-component.vue').default);
+Vue.component('payment-modal', require('./components/payment-order-modal.vue').default);
+Vue.component('empty-results', require('./components/empty-results.vue').default);
+Vue.component('bulk-payment', require('./components/bulk-payment.vue').default);
+Vue.component('payments-home-tabs', require('./components/payments-home-tabs.vue').default);
 Vue.use(VueBarcodeScanner,{sound:true});
+
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 
 const app = new Vue({
     el: '#vueapp',
@@ -42,6 +49,8 @@ const app = new Vue({
     data:{
         city:window.__FORM__ ||'',
         region:'s',
+        supplier:window.__FORM__ ||'1',
+        showModal: false
     },
     method:{
         foo(x){

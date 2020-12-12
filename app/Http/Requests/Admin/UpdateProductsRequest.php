@@ -23,9 +23,8 @@ class UpdateProductsRequest extends FormRequest
     public function rules()
     {
         return [
-        	'product_name'=>'required',
-        	'description'=>'required',
-        	'points'=>'required',
+        	'name'=>'required',
+        	'supplier_id'=>'required',
         ];
     }
 }

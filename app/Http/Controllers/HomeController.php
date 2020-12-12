@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Dealers;
-use App\Electrician;
-use App\Http\Controllers\Exports\EleImp;
+
+use App\Store;
 use App\Http\Requests;
 use App\Product;
-use App\RewardsPayment;
-use App\Setuprepo;
+use App\Http\Controllers\Admin\ReportsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -34,27 +32,15 @@ class HomeController extends Controller
     public function index()
     {
     	$count = new Collection();
-    	$count->electrician = Electrician::all()->count();
-    	$count->dealers = Dealers::all()->count();
-    	$count->products = Product::all()->count();
-	    $payments = RewardsPayment::select(
-		    DB::raw('sum(points) as sums'),
-		    DB::raw("DATE_FORMAT(created_at,'%m') as monthKey"))
-	                   ->whereYear('created_at', date('Y'))
-	                   ->groupBy('monthKey')
-	                   ->orderBy('monthKey', 'ASC')
-	                   ->get();
-	    $count->monthlyPayment = [0,0,0,0,0,0,0,0,0,0,0,0];
+	    
 
-	    foreach($payments as $payment){
-		    $count->monthlyPayment[$payment->monthKey-1] = $payment->sums;
-	    }
+	    $reports = new ReportsController();
+	    $gridData = $reports->dataOrdersSummery('array');
+	    $count->orders = $gridData['orders'];
+	    $count->payments = $gridData['payments'];
+	    $count->supplierOrders = $gridData['supplierOrders'];
 
-	    $pending_payments = Electrician::where('float_points','>=',10)->orderBy('float_points','desc')->take(6)->get();
-
-	    $rewards = Setuprepo::take(10)->orderBy('created_at','desc')->get();
-
-	    return view('home', compact('count','pending_payments','rewards'));
+	    return view('home', compact('count'));
     }
 
 	/**

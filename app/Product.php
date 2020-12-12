@@ -3,26 +3,41 @@
 namespace App;
 
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-class Product extends Eloquent
+
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
 {
-	protected $connection = 'mongodb';
-	protected $collection = 'products';
 
-	protected $fillable = [
-		'product_name', 'model', 'description', 'textcode', 'points','series','category'
-	];
+	protected $fillable = ['code','supplier_id','name','brand','retail_price','dealer_price','distributor_price','stock'];
 
-	protected $guarded = [
-		'units_issued', 'units_active', 'last_barcode'
-	];
+	protected $guarded = [];
 
-	public function setTextcodeAttribute($code){
-		if($code==null){
-			$code = substr(str_replace(' ','',$this->attributes['product_name']),0,2);
-			$this->attributes['textcode'] = strtoupper("U$code");
-		}
+	public static function boot() {
+	    parent::boot();
+
+	    //while creating/inserting item into db  
+	    static::creating(function ($item) {
+	    	if(!$item->code )
+	        $item->code = str_pad(Product::count() + 1,10,0,STR_PAD_LEFT); //assigning value
+	    });
 	}
 
-	//e.g Switch, SK-001, Gold Frame Switch, 'BK', 1000 units, last_barcode,
+
+	public function supplierOrderItems(){
+		return $this->hasMany('App\SupplierOrderItems');
+	}
+
+	public function supplier(){
+		return $this->belongsTo('App\Supplier');
+	}
+
+	public function getCreatedAtAttribute($value){
+		return date('Y-m-d', strtotime($value));
+	}
+
+	public function getUpdatedAtAttribute($value){
+		return date('Y-m-d', strtotime($value));
+	}
+
 }

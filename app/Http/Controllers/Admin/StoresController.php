@@ -23,17 +23,14 @@ class StoresController extends Controller
 		    return abort(401);
 	    }
 
+        $storesQuery = Store::select();
 
-	    if($request->get('business_name',false)){
-		    $stores = Store::where('business_name', 'like', "%{$request->get('business_name')}%")->orWhere('owner_name', 'like', "%{$request->get('business_name')}%")->paginate(20);
-		    if(!count($stores)){
-			    $stores = Store::paginate(20);
-			    return view('admin.stores.index', compact('stores'))
-				    ->withErrors(['business_name' => ["{$request->get('business_name')} Not Found"]]);
-		    }
-	    }else{
-		    $stores = Store::paginate(20);
-	    }
+        if(request('search',false)){
+
+            $storesQuery = $storesQuery->where('business_name', 'like', '%'.request('search').'%')->orWhere('owner_name', 'like', '%'.request('search').'%');
+        }
+
+        $stores = $storesQuery->paginate(15);
 
 	    return view('admin.stores.index', compact('stores'));
 

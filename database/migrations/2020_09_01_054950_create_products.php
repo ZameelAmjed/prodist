@@ -17,6 +17,7 @@ class CreateProducts extends Migration
             $table->bigIncrements('id');
             $table->integer('supplier_id')->default(1);
             $table->string('name');
+            $table->string('code')->nullable();
             $table->string('brand')->nullable();
             $table->integer('stock')->default(0);
 	        $table->double('retail_price')->nullable();

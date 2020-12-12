@@ -8,7 +8,7 @@
 @include('partials.backbutton')
 <div class="card">
     <div class="card-header">
-        {{trans('cruds.products.title_singular')}} </div>
+        {{trans('cruds.products.title_singular')}} - <strong>{{$product->name}}</strong></div>
 
     <div class="card-body">
         <div class="mb-2">
@@ -19,71 +19,47 @@
                         {{ trans('cruds.products.fields.name') }}
                     </th>
                     <td>
-                         {{$product->product_name}}
+                         {{$product->name}}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        {{ trans('cruds.products.fields.model') }}
+                        {{ trans('cruds.products.fields.brand') }}
                     </th>
                     <td>
-                       {{$product->model}}
+                       {{$product->brand}}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        {{ trans('cruds.products.fields.category') }}
+                        {{ trans('cruds.products.fields.supplier') }}
                     </th>
                     <td>
-                        {{$product->category}}
+                        {{$product->supplier->name??''}}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        {{ trans('cruds.products.fields.series') }}
+                        {{ trans('cruds.products.fields.stock') }}
                     </th>
                     <td>
-                        {{$product->series}}
+                        {{$product->stock??0}}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        {{ trans('cruds.products.fields.description') }}
+                        {{ trans('cruds.products.fields.created_at') }}
                     </th>
                     <td>
-                       {{$product->description}}
+                        {{$product->created_at}}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        {{ trans('cruds.products.fields.points') }}
+                        {{ trans('cruds.products.fields.updated_at') }}
                     </th>
                     <td>
-                        {{$product->points}}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ trans('cruds.products.fields.issued') }}
-                    </th>
-                    <td>
-                       {{$product->units_issued}}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ trans('cruds.products.fields.active') }}
-                    </th>
-                    <td>
-                        {{$product->units_active}}
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        {{ trans('cruds.products.fields.last_barcode') }}
-                    </th>
-                    <td>
-                        {{$product->last_barcode}}
+                        {{$product->updated_at}}
                     </td>
                 </tr>
                 </tbody>
@@ -91,77 +67,85 @@
         </div>
         <div class="panel panel-default p-1">
             <div class="panel-title">
-                <h5>{{trans('global.add_units')}}</h5>
+                <h5>{{trans('global.request_items')}}</h5>
             </div>
             <div class="panel-body">
-                <form class="form-inline" action="{{ route("admin.products.add_units", [$product->id]) }}" method="POST" enctype="multipart/form-data" onsubmit="return confirm('{{ trans('global.areYouSureWarning') }}');">
-                    @csrf
-                    @method('POST')
-                    <label for="product_name" class="">{{ trans('cruds.units.fields.no_of_units_text') }}*</label>
-                    <div class="form-group {{ $errors->has('product_name') ? 'has-error' : '' }}" >
-                         <input type="number" id="no_of_units" name="no_of_units" class="form-control"
-                               value="{{ old('no_of_units','') }}" required>
-                        <input class="btn btn-danger" type="submit" value="{{ trans('global.add') }}">
-                    </div>
-                    <div>
-                        @if($errors->has('no_of_units'))
-                            <em class="invalid-feedback">
-                                {{ $errors->first('no_of_units') }}
-                            </em>
-                        @endif
-                    </div>
-                </form>
-
+                {{ Form::open(array('url' => route('admin.supplier_order.store'),'class'=>'form-inline')) }}
+                @csrf
+                <div class="form-group">
+                    <label>{{trans('global.qty')}}
+                        {{Form::number('requested_units',null,['step'=>'1','class'=>'form-control mr-2'])}}
+                        {{Form::hidden('product_id',$product->id)}}
+                    </label>
+                </div>
+                {{Form::submit('submit',['class'=>'btn btn-primary'])}}
+                {{ Form::close() }}
+                <div class="help-block">{{trans('global.po_product_form_help_text')}}</div>
+                @if($pendingSupplierOrders->count())
+                <table class="table table-condensed mt-5">
+                    <tr>
+                        <th>Purchase Order ID</th>
+                        <th>Units</th>
+                        <th>Requested Date</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    @foreach($pendingSupplierOrders as $pso)
+                        @foreach($pso->supplierOrderItems as $item)
+                        <tr>
+                            <td>{{$pso->uid}}</td>
+                            <td>{{$item->requested_units}}</td>
+                            <td>{{$pso->created_at}}</td>
+                            <td>
+                                {{ Form::open(array('url' => route('admin.supplier_order.destroy', $pso->id),'class'=>'form-inline','onsubmit'=>'confirmSubmit(this);return false;')) }}
+                                @method('DELETE')
+                                {{Form::hidden('status',\App\SupplierOrder::cancel)}}
+                                {{Form::submit('cancel',['class'=>'btn btn-warning btn-xs'])}}
+                                {{Form::close()}}
+                            </td>
+                        </tr>
+                            @endforeach
+                    @endforeach
+                </table>
+                    @else
+                    <p class="help-block mt-5">{{trans('global.no_entries_in_table')}}</p>
+                @endif
             </div>
         </div>
         <div class="panel panel-default p-1">
             <div class="panel-title">
-                <h5>{{trans('global.print_code')}}</h5>
+                <h5>{{trans('global.received_items')}}</h5>
             </div>
             <div class="panel-body">
-                <form class="form-inline" action="{{ route("admin.products.print_code", [$product->id]) }}" method="POST" enctype="multipart/form-data" >
-                    @csrf
-                    @method('POST')
-                    <label for="start" class="">{{ trans('global.start') }}*</label>
-                    <div class="form-group {{ $errors->has('start') ? 'has-error' : '' }}" >
-                        <input type="number" id="start" name="start" class="form-control"
-                               value="{{ old('start','') }}" required>
-                        @if($errors->has('start'))
-                            <em class="invalid-feedback invalid-feedback-inline-fix">
-                                {{ $errors->first('start') }}
-                            </em>
-                        @endif
-                    </div>
-                    <label for="end" class="">{{ trans('global.end') }}*</label>
-                    <div class="form-group {{ $errors->has('end') ? 'has-error' : '' }}" >
-                        <input type="number" id="end" name="end" class="form-control"
-                               value="{{ old('end','') }}" required >
-                        @if($errors->has('end'))
-                            <em class="invalid-feedback invalid-feedback-inline-fix">
-                                {{ $errors->first('end') }}
-                            </em>
-                        @endif
-                    </div>
-                    <label class="m-3"> Excel</label>
-                    <div class="form-group mr-3">
-                        <input class="btn btn-danger mr-1" type="radio" name="type" value="excel">
-                    </div>
-                    <label class="m-3"> PDF</label>
-                    <div class="form-group mr-3">
-                        <input class="btn btn-danger" type="radio" name="type" value="pdf" checked>
-                    </div>
-                    <div class="form-group">
-                        <input class="btn btn-primary" type="submit" value="{{ trans('global.generate') }}">
-                    </div>
-                    <div>
-
-                    </div>
-                </form>
-
+                @if($completedSupplierOrders->count())
+                <table class="table table-condensed mt-5">
+                    <tr>
+                        <th>Batch No</th>
+                        <th>Expiry Date</th>
+                        <th>Received Units</th>
+                        <th>Unit price</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Received Date</th>
+                        <th>Requested Date</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    @foreach($completedSupplierOrders as $so)
+                        <tr>
+                            <td>#{{$so->batch_no}}</td>
+                            <td>{{$so->expiry_date}}</td>
+                            <td>{{$so->received_units}}</td>
+                            <td>{{$so->unit_price}}</td>
+                            <td>{{$so->total_price}}</td>
+                            <td>{{$so->status}}</td>
+                            <td>{{$so->created_at}}</td>
+                        </tr>
+                    @endforeach
+                </table>
+                    @else
+                    <p class="help-block">{{trans('global.no_entries_in_table')}}</p>
+                    @endif
             </div>
         </div>
-
-
     </div>
 </div>
 @endsection
