@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Order;
 use App\Store;
 use App\Http\Requests;
 use App\Product;
@@ -39,6 +40,9 @@ class HomeController extends Controller
 	    $count->orders = $gridData['orders'];
 	    $count->payments = $gridData['payments'];
 	    $count->supplierOrders = $gridData['supplierOrders'];
+	    $count->totalStores = Store::count();
+	    $count->totalInventory = Product::sum('stock');
+	    $count->totalPendingOrders = Order::whereNotNull('delivery_date')->where('status','=','processing')->count();
 
 	    return view('home', compact('count'));
     }
@@ -48,9 +52,9 @@ class HomeController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function electrician()
+	public function help()
 	{
-		return view('home');
+		return view('admin.help');
 	}
 
 	public function search(Request $request)

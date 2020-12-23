@@ -82,6 +82,17 @@ class StoresController extends Controller
 
     }
 
+
+    public function history(Store $store)
+    {
+        if (! Gate::allows('users_manage')) {
+            return abort(401);
+        }
+
+        return view('admin.stores.history', compact('store'));
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

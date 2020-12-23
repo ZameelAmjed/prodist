@@ -16,10 +16,10 @@ class RoleSeed extends Seeder
 	    $rolesales->givePermissionTo('sales_executive');
         $role = Role::create(['name' => 'administrator']);
         $role->givePermissionTo('users_manage');
-	    //$role->givePermissionTo('sales_executive');
+	    /////$role->givePermissionTo('sales_executive');
 	    $role2 = Role::create(['name' => 'super admin']);
 	    $role2->givePermissionTo('users_manage');
 	    $role2->givePermissionTo('super_admin');
-	    //$role2->givePermissionTo('sales_executive');
+	    /////$role2->givePermissionTo('sales_executive');
     }
 }

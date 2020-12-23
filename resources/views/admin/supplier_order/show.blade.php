@@ -37,6 +37,14 @@
                 </tr>
                 <tr>
                     <th>
+                        {{trans('cruds.supplier_order.fields.supplier_ref_code')}}
+                    </th>
+                    <td>
+                        {{ $supplierOrder->supplier_ref_code }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         Batch No
                     </th>
                     <td>

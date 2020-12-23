@@ -18,6 +18,7 @@ class CreateSupplierOrders extends Migration
             $table->integer('supplier_id');
 	        $table->string('batch_no')->nullable();
 	        $table->string('invoice_no')->nullable();
+	        $table->string('supplier_ref_code')->nullable();
 	        $table->date('received_date')->nullable();
 	        $table->double('total_amount')->nullable();
             $table->integer('user_id');

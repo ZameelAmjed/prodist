@@ -56,6 +56,13 @@
                     </div>
                 </li>
             @endif
+            @if( request()->is('admin/home'))
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route('admin.help')}}">
+                        <img class="nav-icon" src="{{asset('images/question.svg')}}" height="20px">
+                    </a>
+                </li>
+                @endif
             @yield('nav-item')
         </ul>
     </header>

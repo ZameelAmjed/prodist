@@ -32,6 +32,30 @@
                 </tr>
                 <tr>
                     <th>
+                        {{ trans('cruds.products.fields.code') }}
+                    </th>
+                    <td>
+                        {{$product->code}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ trans('cruds.products.fields.retail_price') }}
+                    </th>
+                    <td>
+                        @currency($product->retail_price)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ trans('cruds.products.fields.distributor_price') }}
+                    </th>
+                    <td>
+                        @currency($product->distributor_price)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         {{ trans('cruds.products.fields.supplier') }}
                     </th>
                     <td>
@@ -130,14 +154,22 @@
                         <th>&nbsp;</th>
                     </tr>
                     @foreach($completedSupplierOrders as $so)
+                        @php
+                            foreach ($so->supplierOrderItems as $item){
+                                if($item->product_id = $product->id){
+                                    $so->item = $item;
+                                }
+                            }
+                        @endphp
                         <tr>
                             <td>#{{$so->batch_no}}</td>
-                            <td>{{$so->expiry_date}}</td>
-                            <td>{{$so->received_units}}</td>
-                            <td>{{$so->unit_price}}</td>
-                            <td>{{$so->total_price}}</td>
+                            <td>{{$so->item->expiry_date}}</td>
+                            <td>{{$so->item->received_units}}</td>
+                            <td>@currency($so->item->unit_price)</td>
+                            <td>@currency($so->item->total_price)</td>
                             <td>{{$so->status}}</td>
-                            <td>{{$so->created_at}}</td>
+                            <td>{{$so->received_date}}</td>
+                             <td>{{$so->created_at}}</td>
                         </tr>
                     @endforeach
                 </table>

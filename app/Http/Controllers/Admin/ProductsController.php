@@ -9,8 +9,9 @@ use App\Http\Requests\Admin\UpdateProductsRequest;
 use App\Product;
 use App\Supplier;
 use App\SupplierOrder;
+use App\SupplierOrderItems;
 use App\User;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -129,7 +130,6 @@ class ProductsController extends Controller
     /**
      * Update Product in storage.
      *
-     * @param  \App\Http\Requests\UpdateUsersRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -150,9 +150,23 @@ class ProductsController extends Controller
             return abort(401);
         }
 
-	    $pendingSupplierOrders = SupplierOrder::where('status',\App\SupplierOrder::pending)->get();
+       $pendingSupplierOrderIds = DB::table('supplier_orders')
+                                  ->join('supplier_order_items',function($join) use ($product){
+         $join->on('supplier_orders.id','=','supplier_order_items.supplier_order_id')
+	         ->where('supplier_order_items.product_id','=',$product->id);
 
-	    $completedSupplierOrders = SupplierOrder::where('status',\App\SupplierOrder::complete)->get();
+       })->where('supplier_orders.status','=',SupplierOrder::pending)
+         ->get()->pluck('id');
+	    $pendingSupplierOrders = SupplierOrder::find($pendingSupplierOrderIds);
+
+	    $completedSupplierOrderIds = DB::table('supplier_orders')
+	                                 ->join('supplier_order_items',function($join) use ($product){
+		                                 $join->on('supplier_orders.id','=','supplier_order_items.supplier_order_id')
+		                                      ->where('supplier_order_items.product_id','=',$product->id);
+
+	                                 })->where('supplier_orders.status','=',SupplierOrder::complete)
+	                                 ->get()->pluck('id');
+	    $completedSupplierOrders = SupplierOrder::find($completedSupplierOrderIds);
 
 	    return view('admin.products.show', compact('product','pendingSupplierOrders','completedSupplierOrders'));
     }

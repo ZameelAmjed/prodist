@@ -44,7 +44,7 @@ class ReportsController extends Controller
 				'stores.area',
 				'stores.region',
 				'stores.created_at',
-				 DB::raw('SUM(orders.total_amount) as total')
+				 DB::raw('SUM(orders.total_amount - orders.return_amount) as total')
 				)
 			->groupBy(
 				'stores.id',
@@ -143,8 +143,9 @@ class ReportsController extends Controller
 			'orders.invoice_no as order.invoice_id',
 			'stores.business_name as store.business_name',
 			'orders.total_amount as order.total_amount',
+			'orders.return_amount as order.return_amount',
 			DB::raw('(SUM(payments.payment_amount)) as payment_amount'),
-			DB::raw('(orders.total_amount - SUM(payments.payment_amount)) as due_amount')
+			DB::raw('((orders.total_amount - orders.return_amount) - SUM(payments.payment_amount)) as due_amount')
 		)
 		->where('orders.status','=','processing');
 		
@@ -159,11 +160,11 @@ class ReportsController extends Controller
 		}
 
 
-		$query->groupby('orders.invoice_no','stores.business_name','orders.total_amount');
+		$query->groupby('orders.invoice_no','stores.business_name','orders.total_amount','orders.return_amount');
 		$items = $query->paginate(10);
 		$info['pagename'] = 'Due Payments';
 
-		return view('admin.reports.common',compact('items', compact($info)));
+		return view('admin.reports.common',compact('items','info'));
 	}
 
 	/**
@@ -304,6 +305,7 @@ class ReportsController extends Controller
 			'stores.business_name',
 			'orders.payment_type',
 			'orders.total_amount',
+			'orders.return_amount',
 			'orders.status',
 			'orders.delivery_date',
 			DB::raw('DATE_FORMAT(orders.created_at, "%Y-%m-%d") as created_at'),
@@ -410,8 +412,10 @@ class ReportsController extends Controller
 			->orderby('duration','DESC');
 		$items = $query->paginate(100);
 
+		$info['form'] = 'noform';
+		$info['pagename'] = 'Stores Long Due';
 
-		return view('admin.reports.common',compact('items'));
+		return view('admin.reports.common',compact('items', 'info'));
 
 	}
 	/**

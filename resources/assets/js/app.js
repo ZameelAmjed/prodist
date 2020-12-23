@@ -33,6 +33,7 @@ Vue.component('grn-items-update', require('./components/grn-items-update.vue').d
 Vue.component('CChartBar', CChartBar);
 Vue.component('modal', require('./components/modal-component.vue').default);
 Vue.component('payment-modal', require('./components/payment-order-modal.vue').default);
+Vue.component('returns-modal', require('./components/returns-order-modal.vue').default);
 Vue.component('empty-results', require('./components/empty-results.vue').default);
 Vue.component('bulk-payment', require('./components/bulk-payment.vue').default);
 Vue.component('payments-home-tabs', require('./components/payments-home-tabs.vue').default);
@@ -50,7 +51,8 @@ const app = new Vue({
         city:window.__FORM__ ||'',
         region:'s',
         supplier:window.__FORM__ ||'1',
-        showModal: false
+        showModal: false,
+        returnsModal: false,
     },
     method:{
         foo(x){

@@ -116,7 +116,7 @@ class PaymentController extends Controller
     		if(!$payment_amount)
     			break;
     		
-    		$due = $order->total_amount - $order->payments->sum('payment_amount');
+    		$due = ($order->total_amount - $order->return_amount) - $order->payments->sum('payment_amount');
 
     		if(!$due)
     			continue;
@@ -152,6 +152,11 @@ class PaymentController extends Controller
 	    	$payment->comment .= ' cheque returned';
 			$payment->save();
 			//save charges
+
+		    $order = $payment->order;
+		    $order->status = Order::$processing;
+		    $order->save();
+
 		    if(request('cheque_return_charge')){
 			    $missCharge = new MiscellaneousCharge();
 			    $missCharge->order_id = $payment->order->id;

@@ -3,7 +3,7 @@
         <img class="breadcumb-top-img" src="{{asset('images/'.$pageimage)}}">
     @endif
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb d-none d-sm-none d-md-block d-lg-block">
         @foreach($links as $link)
             @if(request()->is($link['url'])||(request()->url()==$link['url']))
                 <li class="breadcrumb-item active" aria-current="page">{{$link['name']}}</li>

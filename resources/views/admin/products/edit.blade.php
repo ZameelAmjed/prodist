@@ -47,6 +47,18 @@
                     </em>
                 @endif
             </div>
+            <div class="form-group{{ $errors->has('code') ? 'has-error' : '' }}">
+                <label for="code">{{ trans('cruds.products.fields.code') }}</label>
+                <input class="form-control col-2" name="code" id="code" type="number" step="0.01" value="{{ old('code', isset($product) ? $product->code : '') }}">
+            </div>
+            <div class="form-group{{ $errors->has('retail_price') ? 'has-error' : '' }}">
+                <label for="retail_price">{{ trans('cruds.products.fields.retail_price') }}</label>
+                <input class="form-control col-2" name="retail_price" id="retail_price" type="number" step="0.01" value="{{ old('retail_price', isset($product) ? $product->retail_price : '') }}">
+            </div>
+            <div class="form-group{{ $errors->has('distributor_price') ? 'has-error' : '' }}">
+                <label for="distributor_price">{{ trans('cruds.products.fields.distributor_price') }}</label>
+                <input class="form-control col-2" name="distributor_price" id="distributor_price" type="number" step="0.01" value="{{ old('distributor_price', isset($product) ? $product->distributor_price : '') }}">
+            </div>
             <div class="form-group {{ $errors->has('supplier_id') ? 'has-error' : '' }}">
                 <label for="supplier_id">{{ trans('cruds.products.fields.supplier') }}</label>
                 <select name="supplier_id" class="form-control">

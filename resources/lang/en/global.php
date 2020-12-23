@@ -2,6 +2,7 @@
 
 return [
     'payment_request'                      => 'Payment Requests',
+    'help'                                 => 'Help',
     'qty'                                  => 'Quantity',
     'cancel'                               => 'Cancel',
     'cancelled'                            => '<i class="fa fa-ban"></i> Cancelled',

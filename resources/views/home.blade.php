@@ -9,7 +9,7 @@
                     <div class="media">
                         <img src="{{asset('images/store.svg')}}" height="70px">
                         <div class="media-body">
-                            <h2 class="mt-0">{{0}}</h2>
+                            <h2 class="mt-0">{{$count->totalStores}}</h2>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                     <div class="media">
                         <img src="{{asset('images/boxes.svg')}}" height="70px">
                         <div class="media-body">
-                            <h2 class="mt-0">{{0}}</h2>
+                            <h2 class="mt-0">{{$count->totalInventory}}</h2>
                         </div>
                     </div>
                 </div>
@@ -39,17 +39,16 @@
                     <div class="media">
                         <img src="{{asset('images/money.svg')}}" height="70px">
                         <div class="media-body">
-                            <h2 class="mt-0">{{0}}</h2>
+                            <h2 class="mt-0">{{$count->totalPendingOrders}}</h2>
                         </div>
                     </div>
                 </div>
                 <h3 class="p-0 m-0 text-muted text-uppercase font-weight-bold pl-2">
-                    Pending Payment
+                    Orders Due Payment
                 </h3>
             </div>
         </div>
     </div>
-{{json_encode($count->orders)}}
     @cannot('sales_executive')
     <div class="row mt-5">
         <div class="col-md-6">

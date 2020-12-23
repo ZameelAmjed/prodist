@@ -108,7 +108,7 @@ class HelperApiController extends ResponseController
 		if($request->get('q')){
 			$q = $request->get('q');
 			$data = Store::where('business_name','like',"%{$q}%")
-			             ->where('owner_name','like',"%{$q}%")
+			             ->orWhere('owner_name','like',"%{$q}%")
 			             ->get();
 			return response()->json($data);
 		}

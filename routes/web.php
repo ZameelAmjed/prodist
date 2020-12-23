@@ -16,6 +16,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('users', 'Admin\UsersController');
     Route::resource('products', 'Admin\ProductsController');
     Route::resource('orders', 'Admin\OrderController');
+    Route::post('orders/return', 'Admin\OrderController@newReturn');
+    Route::post('orders/free_issue/{order}', 'Admin\OrderController@freeIssue')->name('orders.freeissue');
 	//  Route::get('payment/receipt/{payment}', 'Admin\PaymentsController@generateReceipt')->name('payment.receipt');
     Route::get('orders/invoice/{order}', 'Admin\OrderController@getInvoice')->name('orders.invoice');
     Route::resource('suppliers', 'Admin\SuppliersController');
@@ -30,7 +32,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
 	Route::delete('users_mass_destroy', 'Admin\UsersController@massDestroy')->name('users.mass_destroy');
 	//Stores
+
     Route::resource('stores', 'Admin\StoresController');
+	Route::get('stores/history/{store}','Admin\StoresController@history')->name('stores.history');
 	Route::get('reports/get_float_cheque','Admin\ReportsController@getFloatCheque');
 	Route::get('reports/get_dishonored_cheque','Admin\ReportsController@getDishonoredCheque');
 	//Reports
@@ -43,6 +47,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 	Route::get('reports/orders', 'Admin\ReportsController@getOrders')->name('reports.orders');
 	Route::get('reports/supplier_orders', 'Admin\ReportsController@getSupplierOrders')->name('reports.supplier_orders');
 	Route::get('reports/stores_long_due', 'Admin\ReportsController@getStoresDuePayments')->name('reports.stores_long_due');
-
+	Route::get('help', 'HomeController@help')->name('help');
 	});
 
