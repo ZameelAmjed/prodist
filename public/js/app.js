@@ -37280,13 +37280,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   methods: {
-    addProduct: function addProduct(index) {
+    addProduct: function addProduct(event) {
       //add empty fields to add new products
       this.form.fields.push(0);
       this.form.qty.push(0);
       this.form.unitPrice.push(0);
       this.form.discount.push(0);
-      this.form.product.push(0);
+      this.form.product.push(0); //Update price for selected item
+
+      for (var index = 0; index < this.$refs.autocomplete.length; index++) {
+        if (this.$refs.autocomplete[index].value === event.value) {
+          this.form.unitPrice[index] = parseFloat(event.selectedObject.retail_price + 0);
+          this.form.qty[index] = 1;
+        }
+      }
     },
     clearProduct: function clearProduct(index) {
       //clear last auto complete & fields
@@ -37698,13 +37705,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   methods: {
-    addProduct: function addProduct(index) {
+    addProduct: function addProduct(event) {
       //add empty fields to add new products
       this.form.fields.push(0);
       this.form.qty.push(0);
       this.form.unitPrice.push(0);
       this.form.discount.push(0);
       this.form.product.push(0);
+
+      if (event) {
+        //Update price for selected item
+        for (var index = 0; index < this.$refs.autocomplete.length; index++) {
+          if (this.$refs.autocomplete[index].value === event.value) {
+            this.form.unitPrice[index] = parseFloat(event.selectedObject.retail_price + 0);
+            this.form.qty[index] = 1;
+          }
+        }
+      }
     },
     clearProduct: function clearProduct(index) {
       //clear last auto complete & fields
@@ -74716,11 +74733,7 @@ var render = function() {
                       "results-value": "id",
                       "results-display": _vm.formattedDisplay
                     },
-                    on: {
-                      selected: function($event) {
-                        return _vm.addProduct(index)
-                      }
-                    },
+                    on: { selected: _vm.addProduct },
                     model: {
                       value: _vm.form.product[index],
                       callback: function($$v) {
@@ -75500,14 +75513,14 @@ var render = function() {
                       "input-class": "form-control",
                       "results-value": "id",
                       "results-display": _vm.formattedDisplay,
-                      "initial-value": _vm.oldProd[index].val,
-                      "initial-display": _vm.oldProd[index].name
+                      "initial-value": _vm.oldProd[index]
+                        ? _vm.oldProd[index].val
+                        : "",
+                      "initial-display": _vm.oldProd[index]
+                        ? _vm.oldProd[index].name
+                        : ""
                     },
-                    on: {
-                      selected: function($event) {
-                        return _vm.addProduct(index)
-                      }
-                    },
+                    on: { selected: _vm.addProduct },
                     model: {
                       value: _vm.form.product[index],
                       callback: function($$v) {
