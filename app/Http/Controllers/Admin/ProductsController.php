@@ -52,7 +52,8 @@ class ProductsController extends Controller
         }elseif (request('search')){
 	        $productsQuery = $productsQuery
 		        ->where('name','like','%'.request('search').'%')
-		        ->orWhere('brand','like','%'.request('search').'%');
+		        ->orWhere('brand','like','%'.request('search').'%')
+		        ->orWhere('code','=',request('search'));
         }
 
 		$products = $productsQuery->paginate(15);

@@ -152,6 +152,7 @@ return [
 			'comment'              => 'Comment',
 			'amount'               => 'Amount',
 			'due_amount'               => 'Due Amount',
+			'cheque_no'               => 'Cheque No',
 			'paid_amount'               => 'Paid Amount',
 			'confirmation_message' => 'Confirmation Message Status',
 			'name_helper'          => '',

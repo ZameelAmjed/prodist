@@ -36724,6 +36724,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -36742,6 +36747,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         comment: '',
         cheque_no: '',
         realize_date: '',
+        branch: '',
         bank: this.banks[0].name
       })
     };
@@ -37930,16 +37936,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.receivedUnits.push(this.old.received_units[index]);
       this.discount.push(this.old.discount[index]);
     }
+
+    if (!this.old.unit_price) {
+      for (var _ref3 in this.fields) {
+        var _ref4 = _slicedToArray(_ref3, 1);
+
+        var _index = _ref4[0];
+        this.unitPrice.push(parseFloat(this.fields[_index].product.distributor_price));
+      }
+    }
   },
   computed: {
     totalPrice: function totalPrice() {
       var x = [0];
       var tot = 0;
 
-      for (var _ref3 in this.fields) {
-        var _ref4 = _slicedToArray(_ref3, 1);
+      for (var _ref5 in this.fields) {
+        var _ref6 = _slicedToArray(_ref5, 1);
 
-        var index = _ref4[0];
+        var index = _ref6[0];
         var discount = this.discount[index] ? this.discount[index] : 0;
         var unitPrice = this.unitPrice[index] ? this.unitPrice[index] : 0;
         var receivedUnits = this.receivedUnits[index] ? this.receivedUnits[index] : 0;
@@ -38089,6 +38104,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -38103,6 +38126,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         comment: '',
         cheque_no: '',
         realize_date: '',
+        branch: '',
         bank: this.banks[0].name
       })
     };
@@ -74247,6 +74271,33 @@ var render = function() {
       _vm._v(" "),
       _vm.form.payment_type == "cheque"
         ? _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Branch")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.branch,
+                  expression: "form.branch"
+                }
+              ],
+              staticClass: "form-control",
+              domProps: { value: _vm.form.branch },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "branch", $event.target.value)
+                }
+              }
+            })
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.form.payment_type == "cheque"
+        ? _c("div", { staticClass: "form-group" }, [
             _c("label", [_vm._v("Bank")]),
             _vm._v(" "),
             _c(
@@ -76666,37 +76717,71 @@ var render = function() {
                         ])
                       : _vm._e(),
                     _vm._v(" "),
-                    _vm.form.payment_type == "cheque"
-                      ? _c("div", [
-                          _c("label", [_vm._v("Realize Date")]),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.realize_date,
-                                expression: "form.realize_date"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            attrs: { type: "date" },
-                            domProps: { value: _vm.form.realize_date },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                    _c("div", { staticClass: "row" }, [
+                      _vm.form.payment_type == "cheque"
+                        ? _c("div", { staticClass: "col-6" }, [
+                            _c("label", [_vm._v("Realize Date")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.realize_date,
+                                  expression: "form.realize_date"
                                 }
-                                _vm.$set(
-                                  _vm.form,
-                                  "realize_date",
-                                  $event.target.value
-                                )
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "date" },
+                              domProps: { value: _vm.form.realize_date },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "realize_date",
+                                    $event.target.value
+                                  )
+                                }
                               }
-                            }
-                          })
-                        ])
-                      : _vm._e(),
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.form.payment_type == "cheque"
+                        ? _c("div", { staticClass: "col-6" }, [
+                            _c("label", [_vm._v("Branch")]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.branch,
+                                  expression: "form.branch"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.form.branch },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "branch",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        : _vm._e()
+                    ]),
                     _vm._v(" "),
                     _vm.form.payment_type == "cheque"
                       ? _c("div", [

@@ -32,7 +32,7 @@
             </div>
             <div class="pl-3 pr-3 form-inline-block">
                 {{Form::open(['method'=>'get'])}}
-                {{Form::text('search', old('search',request('search')), ['placeholder'=>'Store Name', 'class'=>'form-control'])}}
+                {{Form::text('search', old('search',request('search')), ['placeholder'=>'Store or Cheque #', 'class'=>'form-control'])}}
                 {{Form::close()}}
             </div>
         </div>
@@ -52,6 +52,9 @@
                     </th>
                     <th>
                         {{ trans('cruds.payments.fields.payment_type') }}
+                    </th>
+                    <th>
+                        {{ trans('cruds.payments.fields.cheque_no') }}
                     </th>
                     <th>
                         {{ trans('cruds.payments.fields.comment') }}
@@ -78,6 +81,9 @@
                         </td>
                         <td>
                             {{$payment->payment_type}}
+                        </td>
+                        <td>
+                            {{$payment->cheque_no}}
                         </td>
                         <td>
                             <small>{{$payment->comment}}</small>

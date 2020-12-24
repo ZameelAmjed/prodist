@@ -72,7 +72,7 @@
                         Total Invoice Amount
                     </th>
                     <td>
-                        {{ $supplierOrder->total_amount??'--' }}
+                        {{ number_format($supplierOrder->total_amount,2)??'--' }}
                     </td>
                 </tr>
                 <tr>
@@ -121,8 +121,8 @@
                                 <td class="text-center">{{$item->expiry_date??'--'}}</td>
                                 <td class="text-center">{{$item->requested_units}}</td>
                                 <td class="text-center">{{$item->received_units}}</td>
-                                <td class="text-right">{{$item->unit_price}}</td>
-                                <td class="text-right">{{$item->total_price}}</td>
+                                <td class="text-right">@currency($item->unit_price)</td>
+                                <td class="text-right">@currency($item->total_price)</td>
                             </tr>
                         @endforeach
                     </table>

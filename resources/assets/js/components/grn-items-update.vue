@@ -48,6 +48,12 @@
                 this.receivedUnits.push(this.old.received_units[index]);
                 this.discount.push(this.old.discount[index]);
             }
+
+            if(!this.old.unit_price){
+                for(let [index] in this.fields){
+                  this.unitPrice.push(parseFloat(this.fields[index].product.distributor_price));
+                }
+            }
         },
         computed: {
             totalPrice (){

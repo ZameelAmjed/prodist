@@ -26,6 +26,7 @@ class StoreProductsRequest extends FormRequest
         	'name'=>'required',
         	'supplier_id'=>'required',
         	'brand'=>'required',
+	        'code'=>'unique:products,code'
         ];
     }
 }

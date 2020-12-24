@@ -25,6 +25,7 @@ class UpdateProductsRequest extends FormRequest
         return [
         	'name'=>'required',
         	'supplier_id'=>'required',
+	        'code'=>'unique:products,code,'.$this->product->id
         ];
     }
 }

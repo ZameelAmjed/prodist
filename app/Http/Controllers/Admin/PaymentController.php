@@ -31,14 +31,15 @@ class PaymentController extends Controller
 		$payment = $payment->join('orders','payments.order_id','=','orders.id')
 			->join('stores','orders.store_id','=','stores.id')
 			->where(function($q){
-				$q->where('stores.business_name','like','%'.request('search').'%');
+				$q->where('stores.business_name','like','%'.request('search').'%')
+				->orWhere('payments.cheque_no','=',request('search'));
 			});
 		}elseif(request('status') && request('status')!='all')
 		{
 		    $payment = $payment->where('payments.status', request('status',''));
 	    }
 
-	    $payments = $payment->orderby('created_at','desc')->paginate(15);
+	    $payments = $payment->orderby('payments.created_at','desc')->orderby('payments.cheque_no','desc')->paginate(15);
 
     	return view('admin.payment.index', compact('payments'));
     }
@@ -148,14 +149,31 @@ class PaymentController extends Controller
     {
 	    //dishonored cheques
 	    if(request('cheque_return')){
-	    	$payment->status = Payment::reject;
-	    	$payment->comment .= ' cheque returned';
-			$payment->save();
-			//save charges
 
-		    $order = $payment->order;
-		    $order->status = Order::$processing;
-		    $order->save();
+	    	//get all cheques with same cheque number
+		    if(!empty($payment->cheque_no)){
+			    $paymentsMadeByCheque = Payment::where('cheque_no',$payment->cheque_no)->where('realize_date',$payment->realize_date)->get();
+
+			    foreach ($paymentsMadeByCheque as $paymentMade){
+				    $paymentMade->status = Payment::reject;
+				    $paymentMade->comment .= $paymentMade->cheque_no.' cheque returned';
+				    $paymentMade->save();
+				    //save charges
+
+				    $order = $paymentMade->order;
+				    $order->status = Order::$processing;
+				    $order->save();
+			    }
+		    }else{
+			    $payment->status = Payment::reject;
+			    $payment->comment .= $payment->cheque_no.' cheque returned';
+			    $payment->save();
+			    //save charges
+
+			    $order = $payment->order;
+			    $order->status = Order::$processing;
+			    $order->save();
+		    }
 
 		    if(request('cheque_return_charge')){
 			    $missCharge = new MiscellaneousCharge();

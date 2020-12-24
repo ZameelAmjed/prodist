@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group{{ $errors->has('code') ? 'has-error' : '' }}">
                     <label for="code">{{ trans('cruds.products.fields.code') }}</label>
-                    <input class="form-control col-2" name="code" id="code" type="number" step="0.01">
+                    <input class="form-control col-2" name="code" id="code" type="text">
                 </div>
                 <div class="form-group{{ $errors->has('retail_price') ? 'has-error' : '' }}">
                     <label for="retail_price">{{ trans('cruds.products.fields.retail_price') }}</label>
