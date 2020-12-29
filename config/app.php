@@ -18,7 +18,7 @@ return [
 	 * APP COMPANY INFORMATION
 	 */
 
-    'company_name' => env('APP_COMPANY','PRODIST DISTRIBUTIONS'),
+    'company_name' => env('APP_COMPANY_NAME','PRODIST DISTRIBUTIONS'),
     'company_address_block' => env('APP_COMPANY_ADDRESS_BLOCK','block'),
     'company_address_street' => env('APP_COMPANY_ADDRESS_STREET','Street'),
     'company_address_city' => env('APP_COMPANY_ADDRESS_CITY','City'),
@@ -215,7 +215,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 
-	    Jenssegers\Mongodb\MongodbServiceProvider::class,
 	    Barryvdh\DomPDF\ServiceProvider::class,
 	    Milon\Barcode\BarcodeServiceProvider::class,
 	    Maatwebsite\Excel\ExcelServiceProvider::class,

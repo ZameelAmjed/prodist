@@ -233,9 +233,10 @@ return [
 		'fields'         => [
 			'id'                => 'ID',
 			'total_amount'      => 'Total Amount',
-			'invoice_id'      => 'Invoice No',
+			'invoice_id'        => 'Invoice No',
 			'discount'          => 'Discount',
-			'return_amount'          => 'Returns',
+			'return_amount'     => 'Returns',
+			'supplier_ref_no'   => 'Supplier Ref.',
 			'status'            => 'Status',
 			'created_at'        => 'Joined on',
 			'created_at_helper' => '',

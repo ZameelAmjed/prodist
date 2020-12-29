@@ -16,7 +16,8 @@
 
                         </div>
                         <img src="{{asset('images/logo300.png')}}" class="mx-auto d-block logo-login">
-                        <h1 class="text-center">{{config('app.name','Distribution Management System')}}</h1>
+                        <h4 class="text-center">{{config('app.name','Distribution Management System')}}</h4>
+                        <h1 class="text-center text-capitalize">{{strtoupper(config('app.company_name'))}}</h1>
                         <p class="text-muted text-center">Administrator Login</p>
 
                         <div class="input-group mb-3">

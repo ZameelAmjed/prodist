@@ -1,5 +1,5 @@
 <?php
-Route::redirect('/', '/admin/home');
+Route::redirect('/', url('/admin/home'));
 
 Auth::routes(['register' => false]);
 

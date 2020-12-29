@@ -37229,6 +37229,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -37248,6 +37256,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         payment_type: 'cheque',
         cheque_no: '',
         realize_date: '',
+        supplier_ref_no: '',
         bank: this.banks[0].name,
         fields: [0],
         qty: [0],
@@ -37616,6 +37625,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -37629,6 +37646,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       form: new vform__WEBPACK_IMPORTED_MODULE_3__["Form"]({
         store: this.order.store_id,
         order_id: this.order.id,
+        supplier_ref_no: '',
         cheque_no: '',
         realize_date: '',
         bank: this.banks[0].name,
@@ -37647,7 +37665,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
   mounted: function mounted() {
     this.form.payment_type = this.order.payment_type;
     this.form.total_discount = this.order.discount;
-    this.form.total_discount_amount = this.order.discount_amount; //get products for this order
+    this.form.total_discount_amount = this.order.discount_amount;
+    this.form.supplier_ref_no = this.order.supplier_ref_no; //get products for this order
 
     for (var _ref in this.products) {
       var _ref2 = _slicedToArray(_ref, 1);
@@ -74674,7 +74693,37 @@ var render = function() {
               })
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Supplier Reference No")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.supplier_ref_no,
+                  expression: "form.supplier_ref_no"
+                }
+              ],
+              staticClass: "form-control col-4",
+              attrs: { name: "supplier_ref_no" },
+              domProps: { value: _vm.form.supplier_ref_no },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "supplier_ref_no", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "help-block" }, [
+              _vm._v("Supplier invoice no/tracking no etc")
+            ])
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-6" }, [
@@ -74682,26 +74731,46 @@ var render = function() {
             ? _c(
                 "div",
                 {
-                  staticClass: "card bg-secondary mr-auto ml-auto mb-3",
+                  staticClass: "card mr-auto ml-auto mb-3",
                   staticStyle: { "max-width": "23rem" }
                 },
                 [
-                  _c("div", { staticClass: "card-header" }, [
+                  _c("div", { staticClass: "card-header bg-white text-bold" }, [
                     _vm._v(_vm._s(_vm.store.business_name))
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
-                    _c("p", { staticClass: "card-text" }, [
-                      _vm._v(
-                        "\n                       " +
-                          _vm._s(_vm.store.block) +
-                          "," +
-                          _vm._s(_vm.store.street) +
-                          "," +
-                          _vm._s(_vm.store.city) +
-                          "\n                   "
-                      )
-                    ])
+                    _c(
+                      "p",
+                      { staticClass: "card-text" },
+                      [
+                        _vm._l(_vm.store.rating, function(index) {
+                          return _c("i", {
+                            key: index,
+                            staticClass: "fa fa-star text-warning"
+                          })
+                        }),
+                        _vm._v(" "),
+                        _vm._l(5 - _vm.store.rating, function(index) {
+                          return _c("i", {
+                            key: index,
+                            staticClass: "fa fa-star"
+                          })
+                        }),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(
+                          "\n                       " +
+                            _vm._s(_vm.store.block) +
+                            "," +
+                            _vm._s(_vm.store.street) +
+                            "," +
+                            _vm._s(_vm.store.city) +
+                            "\n                   "
+                        )
+                      ],
+                      2
+                    )
                   ])
                 ]
               )
@@ -75455,6 +75524,36 @@ var render = function() {
               attrs: { readonly: "" },
               domProps: { value: _vm.store.business_name }
             })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Supplier Reference No")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.form.supplier_ref_no,
+                  expression: "form.supplier_ref_no"
+                }
+              ],
+              staticClass: "form-control col-4",
+              attrs: { name: "supplier_ref_no" },
+              domProps: { value: _vm.form.supplier_ref_no },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.form, "supplier_ref_no", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "help-block" }, [
+              _vm._v("Supplier invoice no/tracking no etc")
+            ])
           ])
         ]),
         _vm._v(" "),
@@ -75463,26 +75562,46 @@ var render = function() {
             ? _c(
                 "div",
                 {
-                  staticClass: "card bg-secondary mr-auto ml-auto mb-3",
+                  staticClass: "card mr-auto ml-auto mb-3",
                   staticStyle: { "max-width": "23rem" }
                 },
                 [
-                  _c("div", { staticClass: "card-header" }, [
+                  _c("div", { staticClass: "card-header bg-white" }, [
                     _vm._v(_vm._s(_vm.store.business_name))
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-body" }, [
-                    _c("p", { staticClass: "card-text" }, [
-                      _vm._v(
-                        "\n                       " +
-                          _vm._s(_vm.store.block) +
-                          "," +
-                          _vm._s(_vm.store.street) +
-                          "," +
-                          _vm._s(_vm.store.city) +
-                          "\n                   "
-                      )
-                    ])
+                    _c(
+                      "p",
+                      { staticClass: "card-text" },
+                      [
+                        _vm._l(_vm.store.rating, function(index) {
+                          return _c("i", {
+                            key: index,
+                            staticClass: "fa fa-star text-warning"
+                          })
+                        }),
+                        _vm._v(" "),
+                        _vm._l(5 - _vm.store.rating, function(index) {
+                          return _c("i", {
+                            key: index,
+                            staticClass: "fa fa-star"
+                          })
+                        }),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(
+                          "\n                       " +
+                            _vm._s(_vm.store.block) +
+                            "," +
+                            _vm._s(_vm.store.street) +
+                            "," +
+                            _vm._s(_vm.store.city) +
+                            "\n                   "
+                        )
+                      ],
+                      2
+                    )
                   ])
                 ]
               )

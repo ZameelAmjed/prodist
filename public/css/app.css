@@ -294,6 +294,11 @@ button.toast-close-button {
   transform: scale(1.1);
 }
 
+.no-decoration {
+  text-decoration: none !important;
+  color: inherit;
+}
+
 .form-inline-block {
   display: inline-block !important;
 }

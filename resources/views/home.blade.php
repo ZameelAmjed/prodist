@@ -9,7 +9,7 @@
                     <div class="media">
                         <img src="{{asset('images/store.svg')}}" height="70px">
                         <div class="media-body">
-                            <h2 class="mt-0">{{$count->totalStores}}</h2>
+                            <h2 class="mt-0"><a href="{{route('admin.stores.index')}}" class="no-decoration">{{$count->totalStores}}</a></h2>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                     <div class="media">
                         <img src="{{asset('images/boxes.svg')}}" height="70px">
                         <div class="media-body">
-                            <h2 class="mt-0">{{$count->totalInventory}}</h2>
+                            <h2 class="mt-0"><a href="{{route('admin.reports.inventory')}}" class="no-decoration">{{$count->totalInventory}}</a></h2>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <div class="media">
                         <img src="{{asset('images/money.svg')}}" height="70px">
                         <div class="media-body">
-                            <h2 class="mt-0">{{$count->totalPendingOrders}}</h2>
+                            <h2 class="mt-0"><a href="{{route('admin.orders.index',['status'=>'processing'])}}" class="no-decoration">{{$count->totalPendingOrders}}</a></h2>
                         </div>
                     </div>
                 </div>

@@ -12,43 +12,66 @@ class ProductsSeed extends Seeder {
 	 */
 	public $items = [
 		[
-			'name'              => 'Flora Butter',
-			'supplier_id'       => 2
+			'name'              => 'Beehive 1kg',
+			'supplier_id'      => 1,
 		],
 		[
-			'name'              => 'Anchor Butter',
-			'supplier_id'       => 2
+			'name'              => 'Beehive 20kg',
+			'supplier_id'      => 1
 		],
 		[
-			'name'              => 'Margarine 200g',
+			'name'              => 'Hyco 20kg',
 			'supplier_id'       => 1
 		],
 		[
-			'name'              => 'Yeast 300g',
+			'name'              => 'Superfine 20kg',
 			'supplier_id'       => 1
 		],
 		[
-			'name'              => 'Cocoa 50g Pack',
+			'name'              => 'Superfine 5kg',
 			'supplier_id'       => 1
 		],
 		[
-			'name'              => 'Bee Seasoning Mix',
+			'name'              => 'Creaming Fat 15kg',
 			'supplier_id'       => 1
 		],
 		[
-			'name'              => 'Cooking Chocolate 200',
-			'supplier_id'       => 2
+			'name'              => 'Blue Team 15kg',
+			'supplier_id'      => 1
 		],
 		[
-			'name'              => 'Milky Roast Cream',
+			'name'              => 'Masterpuff 15kg',
 			'supplier_id'       => 1
 		],
 		[
-			'name'              => 'Fortuner Sesame Seeds',
-			'supplier_id'       => 2
+			'name'              => 'Masterbunn 15kg',
+			'supplier_id'      => 1
+		],
+		[
+			'name'              => 'Frytol 20kg',
+			'supplier_id'      => 1
+		],
+		[
+			'name'              => 'Frytol 5kg',
+			'supplier_id'      => 1
+		],
+		[
+			'name'              => 'Maja Pan Lubricant 4 in 1',
+			'supplier_id'      => 1
+		],
+		[
+			'name'              => 'Yeast 20kg',
+			'supplier_id'      => 1
+		],
+		[
+			'name'              => 'Meadowlea 5kg',
+			'supplier_id'      => 1
+		],
+		[
+			'name'              => 'Masterbunn 1kg',
+			'supplier_id'      => 1
 		],
 	];
-
 	public function run() {
 		Product::truncate();
 		for ( $x = 0; $x < count($this->items); $x ++ ) {

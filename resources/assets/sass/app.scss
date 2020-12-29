@@ -6,7 +6,10 @@
 @import "variables";
 //Vue Modal
 @import "modalstyle";
-
+.no-decoration {
+  text-decoration: none !important;
+  color: inherit;
+}
 .form-inline-block{
   display: inline-block !important;
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Exports\DueReportExport;
 use App\Http\Controllers\Exports\ElectricianExport;
 use App\Http\Controllers\Exports\ProductsExport;
 use App\Payment;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Collection;
+use PDF;
 
 
 class ReportsController extends Controller
@@ -196,8 +198,9 @@ class ReportsController extends Controller
 		}
 
 		//Sort by Stock or Requested Units
-		if($sort = explode(',',request('sort')))
+		if($sort = explode(',',request('sort')) && isset($sort[1]))
 			$query->orderBy($sort[0],$sort[1]);
+
 			
 		
 
@@ -387,7 +390,7 @@ class ReportsController extends Controller
 	}
 
 
-	public function getStoresDuePayments(Request $request)
+	public function getStoresDuePaymentsX(Request $request)
 	{
 		//USING COMMON TEMPLATE
 		$query = DB::table('orders')
@@ -398,7 +401,7 @@ class ReportsController extends Controller
 		           	        'orders.delivery_date',
 		                    'stores.credit_period',
 		                    DB::raw('SUM(payments.payment_amount) as total_payment'),
-			                DB::raw('@diff:=DATEDIFF(NOW(), orders.delivery_date) AS duration')
+			                DB::raw('@diff:=DATEDIFF(NOW(), orders.created_at) AS duration')
 			           )
 			->LeftJoin('payments',function($join){
 				$join->on('orders.id','=','payments.order_id')
@@ -407,8 +410,8 @@ class ReportsController extends Controller
 			->join('stores','orders.store_id','=','stores.id')
 			->where('orders.status','=','processing')
 			->whereNotNull('orders.delivery_date')
-			->where(DB::raw('@diff>stores.credit_period'))
-			->groupby('orders.id','stores.business_name','orders.delivery_date','stores.credit_period')
+			->where('stores.credit_period','>','@diff')
+			->groupby('orders.id','orders.created_at','stores.business_name','orders.delivery_date','stores.credit_period')
 			->orderby('duration','DESC');
 		$items = $query->paginate(100);
 
@@ -416,6 +419,64 @@ class ReportsController extends Controller
 		$info['pagename'] = 'Stores Long Due';
 
 		return view('admin.reports.common',compact('items', 'info'));
+
+	}
+
+
+	public function getStoresDuePayments(Request $request)
+	{	DB::enableQueryLog(); // Enable query log
+		//USING COMMON TEMPLATE
+		$query = DB::table('orders')
+		           ->select(
+			           'stores.business_name',
+			           'orders.id',
+			           'invoice_no',
+			           'payments.payment_type',
+			           'payments.status',
+			           'payments.payment_amount',
+			           'payments.created_at AS payment_date',
+			           'orders.total_amount',
+			           'orders.return_amount',
+			           'orders.delivery_date',
+			           'orders.created_at',
+			           'stores.credit_period',
+			           'stores.id AS store_id',
+			           DB::raw('@diff:=DATEDIFF(NOW(), orders.created_at) AS duration'),
+			           DB::raw('@diff-stores.credit_period AS delay')
+			           )
+			->LeftJoin('payments',function($join){
+				$join->on('orders.id','=','payments.order_id');
+			})
+			->join('stores','orders.store_id','=','stores.id')
+			->where('orders.status','=','processing')
+			->whereRaw('DATEDIFF(NOW(), orders.created_at)>stores.credit_period')
+			->whereNotNull('orders.delivery_date')
+			->orderby('duration','DESC')
+			->orderby('stores.id','DESC')
+			->orderby('orders.id','DESC');
+
+		if(request('export')=='excel'){
+			//export report to excel
+			return Excel::download(new DueReportExport($query), 'DueReport-'.date('Y-m-d').'.xlsx');
+
+		}
+
+		if(request('export')=='pdf'){
+			$items = $query->get();
+			$pdf = PDF::setOptions( [ 'isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true, "isPhpEnabled", true ] )
+			          ->loadView( 'admin.reports.longduepdf',
+				          compact( 'items' ) )
+			          ->setPaper( 'a4', 'portrait' );
+
+			return $pdf->download( 'long_due_report_'.date('Y-m-d',strtotime('now')). '.pdf' );
+		}
+
+		$items = $query->paginate(100);
+
+		$info['form'] = 'noform';
+		$info['pagename'] = 'Stores Long Due';
+
+		return view('admin.reports.longdue',compact('items', 'info'));
 
 	}
 	/**
