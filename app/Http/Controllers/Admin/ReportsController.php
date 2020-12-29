@@ -430,7 +430,7 @@ class ReportsController extends Controller
 		           ->select(
 			           'stores.business_name',
 			           'orders.id',
-			           'invoice_no',
+			           'orders.supplier_ref_no',
 			           'payments.payment_type',
 			           'payments.status',
 			           'payments.payment_amount',
