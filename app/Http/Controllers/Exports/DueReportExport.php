@@ -21,7 +21,7 @@ class DueReportExport implements FromCollection, WithHeadings {
 		return [
 			'Business Name',
 			'Order Id',
-			'Invoice No',
+			'Supplier Ref.',
 			'Payment Type',
 			'Payment Status',
 			'Payment Amount',
