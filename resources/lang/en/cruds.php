@@ -239,6 +239,7 @@ return [
 			'supplier_ref_no'   => 'Supplier Ref.',
 			'status'            => 'Status',
 			'created_at'        => 'Joined on',
+			'comment'           => 'Comment',
 			'created_at_helper' => '',
 			'updated_at'        => 'Updated at',
 			'updated_at_helper' => '',

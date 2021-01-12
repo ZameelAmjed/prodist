@@ -110,6 +110,24 @@
                         }
                     });
             }
+
+            function confirmSubmitWithComment(event){
+                toastr.info("Please reconfirm your action?<br /><input placeholder='comment' autocomplete='off' id='comment' name='comment' type='text' class='form-control text-small input-sm'><br/><button type='button' id='confirmationRevertYes' class='btn btn-info btn-sm'>Yes</button>",'',
+                    {
+                        closeButton: false,
+                        allowHtml: true,
+                        showDuration: 1000,
+                        debug: true,
+                        onclick: null,
+                        tapToDismiss: false,
+                        onShown: function (toast) {
+                            $("#confirmationRevertYes").click(function(){
+                                $(event).append($("#comment"));
+                                event.submit();
+                            });
+                        }
+                    });
+            }
         </script>
     </div>
 
