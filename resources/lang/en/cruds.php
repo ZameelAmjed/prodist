@@ -48,6 +48,7 @@ return [
 			'name'                     => 'Name',
 			'name_helper'              => '',
 			'email'                    => 'Email',
+			'photo'                    => 'Photo',
 			'email_helper'             => '',
 			'email_verified_at'        => 'Email verified at',
 			'email_verified_at_helper' => '',
@@ -206,9 +207,9 @@ return [
 			'deleted_at_helper'     => '',
 		],
 	],
-	'supplier_order' => [
-		'title'          => 'Supplier Order',
-		'title_singular' => 'Supplier Orders',
+	'purchase_order' => [
+		'title'          => 'Purchase Order',
+		'title_singular' => 'Purchase Orders',
 		'fields'         => [
 			'id'                    => 'ID',
 			'id_helper'             => '',

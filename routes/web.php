@@ -1,5 +1,5 @@
 <?php
-Route::redirect('/', url('/admin/home'));
+Route::redirect('/', '/admin/home');
 
 Auth::routes(['register' => false]);
 
@@ -21,8 +21,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 	//  Route::get('payment/receipt/{payment}', 'Admin\PaymentsController@generateReceipt')->name('payment.receipt');
     Route::get('orders/invoice/{order}', 'Admin\OrderController@getInvoice')->name('orders.invoice');
     Route::resource('suppliers', 'Admin\SuppliersController');
-    Route::get('supplier_order/{supplierOrder}/grn', 'Admin\SupplierOrderController@grn')->name('supplier_order.grn');
-	Route::resource('supplier_order', 'Admin\SupplierOrderController');
+    Route::get('purchase_orders/{purchaseOrder}/grn', 'Admin\PurchaseOrderController@grn')->name('purchase_orders.grn');
+	Route::resource('purchase_orders', 'Admin\PurchaseOrderController');
 
 	Route::get('payment/returncharges', 'Admin\PaymentController@returnChargeView')
 	     ->name('payment.returncharges');
@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 	Route::get('reports/payments', 'Admin\ReportsController@getPayments')->name('reports.payments');
 	Route::get('reports/payments/due', 'Admin\ReportsController@getDuePayments')->name('reports.duepayments');
 	Route::get('reports/orders', 'Admin\ReportsController@getOrders')->name('reports.orders');
-	Route::get('reports/supplier_orders', 'Admin\ReportsController@getSupplierOrders')->name('reports.supplier_orders');
+	Route::get('reports/purchase_orders', 'Admin\ReportsController@getPurchaseOrders')->name('reports.purchase_orders');
 	Route::get('reports/stores_long_due', 'Admin\ReportsController@getStoresDuePayments')->name('reports.stores_long_due');
 	Route::get('help', 'HomeController@help')->name('help');
 	});

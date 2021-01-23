@@ -7,24 +7,18 @@ use App\Http\Controllers\Traits\ProductTrait;
 use App\Http\Requests\Admin\StoreProductsRequest;
 use App\Http\Requests\Admin\UpdateProductsRequest;
 use App\Product;
+use App\PurchaseOrder;
 use App\Supplier;
-use App\SupplierOrder;
-use App\SupplierOrderItems;
 use App\User;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreUsersRequest;
-use App\Http\Requests\Admin\UpdateUsersRequest;
 use PDF;
 use DNS1D;
 use DNS2D;
-use Maatwebsite\Excel\Concerns\FromCollection;
 class ProductsController extends Controller
 {
     /**
@@ -151,25 +145,25 @@ class ProductsController extends Controller
             return abort(401);
         }
 
-       $pendingSupplierOrderIds = DB::table('supplier_orders')
-                                  ->join('supplier_order_items',function($join) use ($product){
-         $join->on('supplier_orders.id','=','supplier_order_items.supplier_order_id')
-	         ->where('supplier_order_items.product_id','=',$product->id);
+       $pendingPurchaseOrderIds = DB::table('purchase_orders')
+                                  ->join('purchase_order_items',function($join) use ($product){
+         $join->on('purchase_orders.id','=','purchase_order_items.purchase_order_id')
+	         ->where('purchase_order_items.product_id','=',$product->id);
 
-       })->where('supplier_orders.status','=',SupplierOrder::pending)
+       })->where('purchase_orders.status','=',PurchaseOrder::pending)
          ->get()->pluck('id');
-	    $pendingSupplierOrders = SupplierOrder::find($pendingSupplierOrderIds);
+	    $pendingPurchaseOrders = PurchaseOrder::find($pendingPurchaseOrderIds);
 
-	    $completedSupplierOrderIds = DB::table('supplier_orders')
-	                                 ->join('supplier_order_items',function($join) use ($product){
-		                                 $join->on('supplier_orders.id','=','supplier_order_items.supplier_order_id')
-		                                      ->where('supplier_order_items.product_id','=',$product->id);
+	    $completedPurchaseOrderIds = DB::table('purchase_orders')
+	                                 ->join('purchase_order_items',function($join) use ($product){
+		                                 $join->on('purchase_orders.id','=','purchase_order_items.purchase_order_id')
+		                                      ->where('purchase_order_items.product_id','=',$product->id);
 
-	                                 })->where('supplier_orders.status','=',SupplierOrder::complete)
+	                                 })->where('purchase_orders.status','=',PurchaseOrder::complete)
 	                                 ->get()->pluck('id');
-	    $completedSupplierOrders = SupplierOrder::find($completedSupplierOrderIds);
+	    $completedPurchaseOrders = PurchaseOrder::find($completedPurchaseOrderIds);
 
-	    return view('admin.products.show', compact('product','pendingSupplierOrders','completedSupplierOrders'));
+	    return view('admin.products.show', compact('product','pendingPurchaseOrders','completedPurchaseOrders'));
     }
 
     /**
@@ -199,6 +193,14 @@ class ProductsController extends Controller
         User::whereIn('id', request('ids'))->delete();
 
         return response()->noContent();
+    }
+
+	/**
+	 * @param Request $request
+	 */
+    public function find(Request $request){
+    	$products = Product::where('code','like','%'.$request->get('keyword').'%')->get();
+    	return response()->json(['data'=>$products->toJson()]);
     }
 
 

@@ -9,19 +9,13 @@
 
 namespace App\Http\Controllers\API;
 
-
-
 use App\Location;
-use App\Payment;
 use App\Product;
 use App\Store;
 use Dotenv\Regex\Regex;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 
 class HelperApiController extends ResponseController
 {

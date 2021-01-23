@@ -59,10 +59,10 @@
                     <ul class="nav-dropdown-items">
                         {{--@can('super_admin')--}}
                         <li class="nav-item">
-                            <a href="{{ route("admin.supplier_order.index") }}"
-                               class="nav-link pl-4 {{ request()->is('admin/supplier_order') || request()->is('admin/supplier_order/*') ? 'active' : '' }}">
+                            <a href="{{ route("admin.purchase_orders.index") }}"
+                               class="nav-link pl-4 {{ request()->is('purchase_orders') || request()->is('purchase_orders') ? 'active' : '' }}">
                                 <img class="nav-icon-sub" src="{{asset('images/circle.svg')}}">
-                                Supplier Orders
+                                Purchase Orders
                             </a>
                         </li>
                     </ul>

@@ -1,17 +1,17 @@
 @extends('layouts.admin')
 @section('content')
     @include('partials.breadcrumb',['links'=>[
-['name'=>'Supplier Order','url'=>route('admin.supplier_order.index')],
-['name'=>'Create','url'=>route('admin.supplier_order.create')]
+['name'=>'Purchase Orders','url'=>route('admin.purchase_orders.index')],
+['name'=>'Create','url'=>route('admin.purchase_orders.create')]
 ],
 'pageimage'=>'inventory.svg'])
     @include('partials.backbutton')
     <div class="card">
         <div class="card-header">
-            {{ trans('global.create') }} {{ trans('cruds.supplier_order.title_singular') }}
+            {{ trans('global.create') }} {{ trans('cruds.purchase_order.title_singular') }}
         </div>
         <div class="card-body">
-            <form action="{{ route("admin.supplier_order.store") }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route("admin.purchase_orders.store") }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 {{Form::hidden('bulk',true)}}
                 <div class="form-group {{ $errors->has('supplier_id') ? 'has-error' : '' }}">
@@ -23,12 +23,12 @@
                     </select>
                 </div>
                 <div class="form-group{{ $errors->has('supplier_ref_code') ? 'has-error' : '' }}">
-                    <label for="supplier_ref_code">{{ trans('cruds.supplier_order.fields.supplier_ref_code') }}</label>
+                    <label for="supplier_ref_code">{{ trans('cruds.purchase_order.fields.supplier_ref_code') }}</label>
                     <input class="form-control col-2" name="supplier_ref_code" id="supplier_ref_code" type="text">
-                    <p class="help-block">{{trans('cruds.supplier_order.fields.supplier_ref_code_helper')}}</p>
+                    <p class="help-block">{{trans('cruds.purchase_order.fields.supplier_ref_code_helper')}}</p>
                 </div>
                 <div>
-                    <products-supplier-order :errors="{{ json_encode($errors->toArray(),JSON_FORCE_OBJECT)}}" :supplier="supplier" :old-name="{{json_encode(old('name',0))}}" :old-requested-units="{{ json_encode(old('requested_units',[]))}}"></products-supplier-order>
+                    <products-purchase-order :errors="{{ json_encode($errors->toArray(),JSON_FORCE_OBJECT)}}" :supplier="supplier" :old-name="{{json_encode(old('name',0))}}" :old-requested-units="{{ json_encode(old('requested_units',[]))}}"></products-purchase-order>
                 </div>
                 <div>
                     <input class="btn btn-primary" type="submit" value="{{ trans('global.create') }}">

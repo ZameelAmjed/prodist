@@ -94,7 +94,7 @@
                 <h5>{{trans('global.request_items')}}</h5>
             </div>
             <div class="panel-body">
-                {{ Form::open(array('url' => route('admin.supplier_order.store'),'class'=>'form-inline')) }}
+                {{ Form::open(array('url' => route('admin.purchase_orders.store'),'class'=>'form-inline')) }}
                 @csrf
                 <div class="form-group">
                     <label>{{trans('global.qty')}}
@@ -105,7 +105,7 @@
                 {{Form::submit('submit',['class'=>'btn btn-primary'])}}
                 {{ Form::close() }}
                 <div class="help-block">{{trans('global.po_product_form_help_text')}}</div>
-                @if($pendingSupplierOrders->count())
+                @if($pendingPurchaseOrders->count())
                 <table class="table table-condensed mt-5">
                     <tr>
                         <th>Purchase Order ID</th>
@@ -113,16 +113,16 @@
                         <th>Requested Date</th>
                         <th>&nbsp;</th>
                     </tr>
-                    @foreach($pendingSupplierOrders as $pso)
-                        @foreach($pso->supplierOrderItems as $item)
+                    @foreach($pendingPurchaseOrders as $pso)
+                        @foreach($pso->purchaseOrderItems as $item)
                         <tr>
                             <td>{{$pso->uid}}</td>
                             <td>{{$item->requested_units}}</td>
                             <td>{{$pso->created_at}}</td>
                             <td>
-                                {{ Form::open(array('url' => route('admin.supplier_order.destroy', $pso->id),'class'=>'form-inline','onsubmit'=>'confirmSubmit(this);return false;')) }}
+                                {{ Form::open(array('url' => route('admin.purchase_orders.destroy', $pso->id),'class'=>'form-inline','onsubmit'=>'confirmSubmit(this);return false;')) }}
                                 @method('DELETE')
-                                {{Form::hidden('status',\App\SupplierOrder::cancel)}}
+                                {{Form::hidden('status',\App\PurchaseOrder::cancel)}}
                                 {{Form::submit('cancel',['class'=>'btn btn-warning btn-xs'])}}
                                 {{Form::close()}}
                             </td>
@@ -140,7 +140,7 @@
                 <h5>{{trans('global.received_items')}}</h5>
             </div>
             <div class="panel-body">
-                @if($completedSupplierOrders->count())
+                @if($completedPurchaseOrders->count())
                 <table class="table table-condensed mt-5">
                     <tr>
                         <th>Batch No</th>
@@ -153,9 +153,9 @@
                         <th>Requested Date</th>
                         <th>&nbsp;</th>
                     </tr>
-                    @foreach($completedSupplierOrders as $so)
+                    @foreach($completedPurchaseOrders as $so)
                         @php
-                            foreach ($so->supplierOrderItems as $item){
+                            foreach ($so->purchaseOrderItems as $item){
                                 if($item->product_id = $product->id){
                                     $so->item = $item;
                                 }

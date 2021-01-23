@@ -24,8 +24,8 @@ class Product extends Model
 	}
 
 
-	public function supplierOrderItems(){
-		return $this->hasMany('App\SupplierOrderItems');
+	public function purchaseOrderItems(){
+		return $this->hasMany('App\PurchaseOrderItems');
 	}
 
 	public function supplier(){

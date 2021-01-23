@@ -66,7 +66,7 @@
         label: 'Recived Payments',
       },
       {
-        data: {{json_encode($count->supplierOrders)}},
+        data: {{json_encode($count->purchaseOrders)}},
         backgroundColor: '#ffc107',
         label: 'Supplier Orders',
       }

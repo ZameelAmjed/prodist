@@ -12,17 +12,11 @@ namespace App\Http\Controllers\API;
 use App\Duplicates;
 use App\Electrician;
 use App\Http\Controllers\Traits\ProductTrait;
-use App\Http\Requests\Admin\StoreElectricianRequest;
 use App\Product;
 use App\Setuprepo;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ResponseController as ResponseController;
-use Illuminate\Support\Facades\Auth;
-use App\User;
-
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 

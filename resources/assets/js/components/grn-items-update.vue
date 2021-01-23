@@ -10,7 +10,7 @@
             <th class="text-center">Total Price</th>
         </tr>
         <tr v-for="(item, index) in fields">
-            <td>{{item.product.name}}<input :name="'supplier_order_item_id['+index+']'" type="hidden" :value="item.id"/></td>
+            <td>{{item.product.name}}<input :name="'purchase_order_item_id['+index+']'" type="hidden" :value="item.id"/></td>
             <td class="text-center">{{item.requested_units}}</td>
             <td><input class="form-control" v-bind:class="{'has-error': errors['received_units.'+index] }" type="number" step="1" min="0" :name="'received_units['+index+']'" v-model.number="receivedUnits[index]"></td>
             <td><input class="form-control" :name="'expiry_date['+index+']'" type="date"></td>

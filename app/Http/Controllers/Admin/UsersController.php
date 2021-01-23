@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
+use Illuminate\Support\Facades\File;
+use Image;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -92,6 +94,22 @@ class UsersController extends Controller
         }
 
         $user->update($request->all());
+
+        // Update image if set
+	    //image is set delete old add new
+	    if($request->file('photo')){
+		    if(!File::exists('images/users/'.$user->photo))
+			    File::delete('images/users/'.$user->photo);
+
+		    //create directory if not
+		    if(!File::ensureDirectoryExists('images/users'));
+		        File::makeDirectory('users');
+
+		    $user->photo = time().$user->id.'.jpg';
+		    $user->save();
+		    Image::make($request->file('photo'))->save('images/users/'.$user->photo,80,'jpg');
+	    }
+
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierOrderItems extends Migration
+class CreatePurchaseOrderItems extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateSupplierOrderItems extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_order_items', function (Blueprint $table) {
+        Schema::create('purchase_order_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-	        $table->integer('supplier_order_id');
+	        $table->integer('purchase_order_id');
 	        $table->integer('product_id');
 	        $table->integer('requested_units');
 	        $table->date('expiry_date')->nullable();
@@ -34,6 +34,6 @@ class CreateSupplierOrderItems extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_order_items');
+        Schema::dropIfExists('purchase_order_items');
     }
 }

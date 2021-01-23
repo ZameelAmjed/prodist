@@ -51,6 +51,18 @@
                     {{ trans('cruds.user.fields.password_helper') }}
                 </p>
             </div>
+            @if($user->photo!='')
+                <img class="img img-thumbnail img-thumb-profile mb-2" style="max-height: 200px;" src="{{ asset('images/users/'.$user->photo)}}" />
+            @endif
+            <div class="form-group {{ $errors->has('photo') ? 'has-error' : '' }}">
+                <label for="photo">{{ trans('cruds.user.fields.photo') }}</label>
+                <input type="file" id="photo" name="photo" value="{{ old('photo', isset($user) ? $user->photo : '') }}">
+                @if($errors->has('photo'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('photo') }}
+                    </em>
+                @endif
+            </div>
             @can('super_admin')
             <div class="form-group {{ $errors->has('roles') ? 'has-error' : '' }}">
                 <label for="roles">{{ trans('cruds.user.fields.roles') }}*

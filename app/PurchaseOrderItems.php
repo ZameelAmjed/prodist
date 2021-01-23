@@ -5,9 +5,9 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class SupplierOrderItems extends Model
+class PurchaseOrderItems extends Model
 {
-	protected $fillable = ['supplier_order_id','product_id','requested_units','expiry_date','received_units','unit_price','total_price' ];
+	protected $fillable = ['purchase_order_id','product_id','requested_units','expiry_date','received_units','unit_price','total_price' ];
 
 	public function product(){
 		return $this->belongsTo('App\Product');

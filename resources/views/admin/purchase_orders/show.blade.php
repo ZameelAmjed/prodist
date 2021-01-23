@@ -1,19 +1,21 @@
 @extends('layouts.admin')
 @include('partials.breadcrumb',['links'=>[
-['name'=>'Supplier Order','url'=>route('admin.supplier_order.index')],
-['name'=>'View','url'=>route('admin.supplier_order.show',$supplierOrder)],
+['name'=>'Purchase Orders','url'=>route('admin.purchase_orders.index')],
+['name'=>'View','url'=>route('admin.purchase_orders.show',$purchaseOrder)],
 ],
 'pageimage'=>'box.svg'])
 @section('content')
 @component('partials.backbutton')
 @slot('more')
     @can('users_manage')
-            <a class="btn btn-success" href="#">
+        @if($purchaseOrder->status == \App\PurchaseOrder::pending)
+            <a class="btn btn-success" href="{{route('admin.purchase_orders.grn',$purchaseOrder->id)}}">
                 {{ trans('global.grn') }}
             </a>
-            {{ Form::open(array('url' => route('admin.supplier_order.destroy', [$supplierOrder->id]),'class'=>'form-inline-block')) }}
+        @endif
+            {{ Form::open(array('url' => route('admin.purchase_orders.destroy', [$purchaseOrder->id]),'class'=>'form-inline-block')) }}
             @method('DELETE')
-            {{ Form::hidden('status',\App\SupplierOrder::cancel) }}
+            {{ Form::hidden('status',\App\PurchaseOrder::cancel) }}
             {{ Form::submit('Cancel',['class'=>'btn btn-danger']) }}
             {{ Form::close() }}
     @endcan
@@ -21,7 +23,7 @@
 @endcomponent
 <div class="card">
     <div class="card-header">
-        {{trans('cruds.supplier_order.title_singular')}}<strong></strong></div>
+        {{trans('cruds.purchase_order.title_singular')}}<strong></strong></div>
 
     <div class="card-body">
         <div class="mb-2">
@@ -32,15 +34,15 @@
                         {{trans('global.id')}}
                     </th>
                     <td>
-                        {{ $supplierOrder->uid }}
+                        {{ $purchaseOrder->uid }}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        {{trans('cruds.supplier_order.fields.supplier_ref_code')}}
+                        {{trans('cruds.purchase_order.fields.supplier_ref_code')}}
                     </th>
                     <td>
-                        {{ $supplierOrder->supplier_ref_code }}
+                        {{ $purchaseOrder->supplier_ref_code }}
                     </td>
                 </tr>
                 <tr>
@@ -48,7 +50,7 @@
                         Batch No
                     </th>
                     <td>
-                        {{ $supplierOrder->batch_no??'--' }}
+                        {{ $purchaseOrder->batch_no??'--' }}
                     </td>
                 </tr>
                 <tr>
@@ -56,7 +58,7 @@
                         Invoice No
                     </th>
                     <td>
-                        {{ $supplierOrder->invoice_no??'--' }}
+                        {{ $purchaseOrder->invoice_no??'--' }}
                     </td>
                 </tr>
                 <tr>
@@ -64,7 +66,7 @@
                         Received Date
                     </th>
                     <td>
-                        {{ $supplierOrder->received_date??'--' }}
+                        {{ $purchaseOrder->received_date??'--' }}
                     </td>
                 </tr>
                 <tr>
@@ -72,7 +74,7 @@
                         Total Invoice Amount
                     </th>
                     <td>
-                        {{ number_format($supplierOrder->total_amount,2)??'--' }}
+                        {{ number_format($purchaseOrder->total_amount,2)??'--' }}
                     </td>
                 </tr>
                 <tr>
@@ -80,15 +82,15 @@
                         Status
                     </th>
                     <td>
-                            {!! trans('global.'.$supplierOrder->status) !!}
+                            {!! trans('global.'.$purchaseOrder->status) !!}
                     </td>
                 </tr>
                 <tr>
                     <th>
-                        {{ trans('cruds.supplier_order.fields.created_at') }}
+                        {{ trans('cruds.purchase_order.fields.created_at') }}
                     </th>
                     <td>
-                        {{$supplierOrder->created_at}}
+                        {{$purchaseOrder->created_at}}
                     </td>
                 </tr>
                 <tr>
@@ -96,7 +98,7 @@
                         {{ trans('cruds.products.fields.updated_at') }}
                     </th>
                     <td>
-                        {{$supplierOrder->updated_at}}
+                        {{$purchaseOrder->updated_at}}
                     </td>
                 </tr>
                 </tbody>
@@ -115,7 +117,7 @@
                             <th class="text-right">Unit Price</th>
                             <th class="text-right">Total Price</th>
                         </tr>
-                        @foreach($supplierOrder->supplierOrderItems as $item)
+                        @foreach($purchaseOrder->purchaseOrderItems as $item)
                             <tr>
                                 <td>{{$item->product->name}}</td>
                                 <td class="text-center">{{$item->expiry_date??'--'}}</td>

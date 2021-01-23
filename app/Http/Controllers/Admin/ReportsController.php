@@ -8,7 +8,6 @@ use App\Http\Controllers\Exports\DueReportExport;
 use App\Http\Controllers\Exports\ElectricianExport;
 use App\Http\Controllers\Exports\ProductsExport;
 use App\Payment;
-use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -177,14 +176,14 @@ class ReportsController extends Controller
 
 		
 		$query = DB::table('products')
-		->leftjoin('supplier_order_items','products.id','=','supplier_order_items.product_id')
-		->leftjoin('supplier_orders', function($join){
-			$join->on('supplier_order_items.supplier_order_id','=','supplier_orders.id')
-			->where('supplier_orders.status','received');
+		->leftjoin('purchase_order_items','products.id','=','purchase_order_items.product_id')
+		->leftjoin('purchase_orders', function($join){
+			$join->on('purchase_order_items.purchase_order_id','=','purchase_orders.id')
+			->where('purchase_orders.status','received');
 		})
 		
 		->join('suppliers','products.supplier_id','=','suppliers.id')
-		->select('products.id','products.code','products.name', 'products.stock','supplier_order_items.requested_units','supplier_order_items.received_units','products.supplier_id','suppliers.name AS supplier_name');
+		->select('products.id','products.code','products.name', 'products.stock','purchase_order_items.requested_units','purchase_order_items.received_units','products.supplier_id','suppliers.name AS supplier_name');
 
 		if($request->input('code'))
 		{
@@ -341,21 +340,21 @@ class ReportsController extends Controller
 	}
 
 
-	public function getSupplierOrders(Request $request)
+	public function getPurchaseOrders(Request $request)
 	{
 
-		$query = DB::table('supplier_orders');
+		$query = DB::table('purchase_orders');
 
-		$query->join('suppliers','supplier_orders.supplier_id','=','suppliers.id');
+		$query->join('suppliers','purchase_orders.supplier_id','=','suppliers.id');
 
 		$query->select(
-			DB::raw('CONCAT("",",","supplier_order/",supplier_orders.id) as link'),
-			'supplier_orders.invoice_no as supplier_invoice_no',
-			'supplier_orders.batch_no as supplier_batch_no',
+			DB::raw('CONCAT("",",","purchase_order/",purchase_orders.id) as link'),
+			'purchase_orders.invoice_no as supplier_invoice_no',
+			'purchase_orders.batch_no as supplier_batch_no',
 			'suppliers.name as supplier_name',
-			'supplier_orders.status as status',
-			DB::raw('DATE_FORMAT(supplier_orders.created_at, "%Y-%m-%d") as created_at'),
-			DB::raw('FORMAT(supplier_orders.total_amount, 2) as total_amount')
+			'purchase_orders.status as status',
+			DB::raw('DATE_FORMAT(purchase_orders.created_at, "%Y-%m-%d") as created_at'),
+			DB::raw('FORMAT(purchase_orders.total_amount, 2) as total_amount')
 		);
 
 		if(request('name')){
@@ -363,22 +362,22 @@ class ReportsController extends Controller
 		}
 
 		if(request('status')){
-			$query->where('supplier_orders.status','=',request('status'));
+			$query->where('purchase_orders.status','=',request('status'));
 		}
 
 		if(request('supplier_batch_no')){
-			$query->where('supplier_orders.batch_no','=',request('supplier_batch_no'));
+			$query->where('purchase_orders.batch_no','=',request('supplier_batch_no'));
 		}
 
 		if(request('supplier_invoice_no')){
-			$query->where('supplier_orders.invoice_no','=',request('supplier_invoice_no'));
+			$query->where('purchase_orders.invoice_no','=',request('supplier_invoice_no'));
 		}
 		
 		$items = $query->paginate(100);
 
 		//get total
 		$query->select(
-			DB::raw('SUM(supplier_orders.total_amount) as total_amount')
+			DB::raw('SUM(purchase_orders.total_amount) as total_amount')
 		);
 		
 		$total = $query->value('total_amount');
@@ -511,7 +510,7 @@ class ReportsController extends Controller
 	                   ->orderBy('monthKey', 'ASC')
 	                   ->get();
 
-       $count->supplierOrders = DB::table('supplier_orders')->select(
+       $count->purchaseOrders = DB::table('purchase_orders')->select(
 		    DB::raw('sum(total_amount) as total'),
 		    DB::raw("DATE_FORMAT(created_at,'%m') as monthKey"))
        					->where('status', 'received')
@@ -523,7 +522,7 @@ class ReportsController extends Controller
 	    	return $count;
 	    
 	    //preocess array
-	    $orders = $payments = $supplierOrders = [0,0,0,0,0,0,0,0,0,0,0,0];
+	    $orders = $payments = $purchaseOrders = [0,0,0,0,0,0,0,0,0,0,0,0];
 
 	    foreach($count->orders as $order){
 		    $orders[$order->monthKey-1] = number_format($order->total,2,'.','');
@@ -533,11 +532,11 @@ class ReportsController extends Controller
 		    $payments[$payment->monthKey-1] = number_format($payment->total,2,'.','');
 	    }
 
-	    foreach($count->supplierOrders as $supplierOrder){
-		    $supplierOrders[$supplierOrder->monthKey-1] = number_format($supplierOrder->total,2,'.','');
+	    foreach($count->purchaseOrders as $purchaseOrder){
+		    $purchaseOrders[$purchaseOrder->monthKey-1] = number_format($purchaseOrder->total,2,'.','');
 	    }
 
-	    return ['orders'=>$orders, 'payments'=>$payments, 'supplierOrders'=>$supplierOrders];
+	    return ['orders'=>$orders, 'payments'=>$payments, 'purchaseOrders'=>$purchaseOrders];
 
 	}
 

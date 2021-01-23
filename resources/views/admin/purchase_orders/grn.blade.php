@@ -1,26 +1,26 @@
 @extends('layouts.admin')
 @section('content')
     @include('partials.breadcrumb',['links'=>[
-['name'=>'Supplier Order','url'=>route('admin.supplier_order.index')],
-['name'=>'GRN','url'=>route('admin.supplier_order.grn',$supplierOrder)]
+['name'=>'Purchase Orders','url'=>route('admin.purchase_orders.index')],
+['name'=>'GRN','url'=>route('admin.purchase_orders.grn',$purchaseOrder)]
 ],
 'pageimage'=>'inventory.svg'])
     @include('partials.backbutton')
     <div class="card">
         <div class="card-header">
-            GRN for Purchase Order <strong>#{{$supplierOrder->uid}}</strong>
+            GRN for Purchase Order <strong>#{{$purchaseOrder->uid}}</strong>
         </div>
 
         <div class="card-body">
-            <form action="{{route('admin.supplier_order.update', $supplierOrder->id)}}" method="POST" enctype="multipart/form-data">
+            <form action="{{route('admin.purchase_orders.update', $purchaseOrder->id)}}" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 {{Form::hidden('grn',true)}}
                 <table class="table table-bordered">
                     <tr>
-                        <td><strong>Supplier:</strong> {{$supplierOrder->supplier->name}}</td>
-                        <td><strong>{{ trans('cruds.supplier_order.fields.created_at') }}:</strong> {{$supplierOrder->created_at}}</td>
-                        <td><strong>Status:</strong> {!! trans('global.'.$supplierOrder->status) !!}</td>
+                        <td><strong>Supplier:</strong> {{$purchaseOrder->supplier->name}}</td>
+                        <td><strong>{{ trans('cruds.purchase_order.fields.created_at') }}:</strong> {{$purchaseOrder->created_at}}</td>
+                        <td><strong>Status:</strong> {!! trans('global.'.$purchaseOrder->status) !!}</td>
                     </tr>
                     <tr>
                         <td><label>Batch No:</label> <input class="form-control" name="batch_no"/></td>
@@ -32,7 +32,7 @@
                             <strong>Items</strong>
                             <grn-items-update
                                     :errors="{{ json_encode($errors->toArray(),JSON_FORCE_OBJECT)}}"
-                                    :fields="{{json_encode($supplierOrder->supplierOrderItems)}}"
+                                    :fields="{{json_encode($purchaseOrder->purchaseOrderItems)}}"
                                     :old="{{json_encode(old(null,0))}}"
                             ></grn-items-update>
                         </td>

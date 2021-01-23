@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SupplierOrder extends Model
+class PurchaseOrder extends Model
 {
 	const pending = 'requested';
 
@@ -12,7 +12,7 @@ class SupplierOrder extends Model
 
 	const cancel = 'cancelled';
 
-	protected $fillable = ['supplier_id','user_id','batch_no','total_amount','status'];
+	protected $fillable = ['supplier_id','user_id','batch_no','total_amount','status','supplier_ref_code'];
 
 	protected $appends = ['uid'];
 
@@ -28,8 +28,8 @@ class SupplierOrder extends Model
 		return $this->belongsTo('App\Supplier');
 	}
 
-	public function supplierOrderItems(){
-		return $this->hasMany('App\SupplierOrderItems')->with('product');
+	public function purchaseOrderItems(){
+		return $this->hasMany('App\PurchaseOrderItems')->with('product');
 	}
 
 	public function getUidAttribute()

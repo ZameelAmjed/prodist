@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 @include('partials.breadcrumb',['links'=>[
-['name'=>'Supplier Order','url'=>route('admin.supplier_order.index')],
+['name'=>'Purchase Orders','url'=>route('admin.purchase_orders.index')],
 ],
 'pageimage'=>'inventory.svg'])
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ trans('cruds.supplier_order.title_singular') }} {{ trans('global.list') }}
+            {{ trans('cruds.purchase_order.title_singular') }} {{ trans('global.list') }}
             <div class="pull-right">
                 <form method="get" class="form-inline">
                     <label>Status&nbsp;</label>
@@ -23,47 +23,47 @@
                         </button>
                     </div>
                     <div class="col-md-4">
-                        <input type="text" id="search" name="search" placeholder="Supplier Order ID" class="form-control"
+                        <input type="text" id="search" name="search" placeholder="Purchase Order ID" class="form-control"
                                value="{{old('search',request('search'))}}">
                     </div>
                 </form>
             </div>
         </div>
         <div class="card-body">
-            @if($supplierOrders->count())
-                @foreach($supplierOrders as $key => $supplierOrder)
+            @if($purchaseOrders->count())
+                @foreach($purchaseOrders as $key => $purchaseOrder)
                     <div class="card">
                         <div class="card-header bg-white">
                             <div class="row">
                                 <div class="col-3">
-                                    <strong>ID :</strong> {{$supplierOrder->uid}}
+                                    <strong>ID :</strong> {{$purchaseOrder->uid}}
                                 </div>
                                 <div class="col-3">
-                                    <strong>Supplier :</strong> {{$supplierOrder->supplier->name}}
+                                    <strong>Supplier :</strong> {{$purchaseOrder->supplier->name}}
                                 </div>
                                 <div class="col-3">
-                                    @if($supplierOrder->status != \App\SupplierOrder::complete)
-                                        <strong>Requested Date :</strong>  {{$supplierOrder->created_at}}
+                                    @if($purchaseOrder->status != \App\PurchaseOrder::complete)
+                                        <strong>Requested Date :</strong>  {{$purchaseOrder->created_at}}
                                     @endif
-                                    @if($supplierOrder->status == \App\SupplierOrder::complete)
-                                        <strong>Received Date :</strong>  {{$supplierOrder->received_date??'--'}}
+                                    @if($purchaseOrder->status == \App\PurchaseOrder::complete)
+                                        <strong>Received Date :</strong>  {{$purchaseOrder->received_date??'--'}}
                                     @endif
                                 </div>
                                 <div class="col-3">
                                     <a class="btn btn-xs btn-primary"
-                                       href="{{ route('admin.supplier_order.show', $supplierOrder->id) }}">
+                                       href="{{ route('admin.purchase_orders.show', $purchaseOrder->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                     @cannot('sales_executive')
-                                        @if($supplierOrder->status==\App\SupplierOrder::pending)
+                                        @if($purchaseOrder->status==\App\PurchaseOrder::pending)
                                             <a class="btn btn-xs btn-success"
-                                               href="{{ route('admin.supplier_order.grn', $supplierOrder) }}">
+                                               href="{{ route('admin.purchase_orders.grn', $purchaseOrder) }}">
                                                 {{trans('global.grn')}}
                                             </a>
                                         @endif
-                                        @if($supplierOrder->status==\App\SupplierOrder::pending)
+                                        @if($purchaseOrder->status==\App\PurchaseOrder::pending)
                                             <form metdod="post" class=""
-                                                  action="{{ route('admin.supplier_order.destroy', $supplierOrder->id) }}"
+                                                  action="{{ route('admin.purchase_orders.destroy', $purchaseOrder->id) }}"
                                                   onsubmit="confirmSubmit(this);return false;"
                                                   style="display: inline-block;">
                                                 @csrf
@@ -88,7 +88,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($supplierOrder->supplierOrderItems as $item)
+                                @foreach($purchaseOrder->purchaseOrderItems as $item)
                                     <tr>
                                         <td>{{$item->product->name}}</td>
                                         <td class="text-center">{{$item->requested_units}}</td>
@@ -99,14 +99,14 @@
                                 @endforeach
                                 <tr>
                                     <td colspan="4" class="text-right"></td>
-                                    <td class="text-right"><strong>{{trans('global.format_price',['price'=>$supplierOrder->total_amount])}}</strong></td>
+                                    <td class="text-right"><strong>{{trans('global.format_price',['price'=>$purchaseOrder->total_amount])}}</strong></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 @endforeach
-            {{$supplierOrders->links()}}
+            {{$purchaseOrders->links()}}
             @else
              <empty-results message="{{trans('global.no_entries_in_table')}}"></empty-results> 
              @endif
@@ -118,8 +118,8 @@
     @component('partials.navitem')
         @slot('links')
             @can('users_manage')
-                <a class="nav-item nav-link" href="{{route('admin.supplier_order.create')}}"><i class="fa fa-plus"></i>
-                    Add Supplier Order</a>
+                <a class="nav-item nav-link" href="{{route('admin.purchase_orders.create')}}"><i class="fa fa-plus"></i>
+                    Add Purchase Order</a>
             @endcan
         @endslot
     @endcomponent

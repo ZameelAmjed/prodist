@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupplierOrders extends Migration
+class CreatePurchaseOrders extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSupplierOrders extends Migration
      */
     public function up()
     {
-        Schema::create('supplier_orders', function (Blueprint $table) {
+        Schema::create('purchase_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('supplier_id');
 	        $table->string('batch_no')->nullable();

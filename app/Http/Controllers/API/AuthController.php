@@ -1,6 +1,6 @@
 <?php
 /**
- * Project: chint
+ * Project: Prodist
  * File Name: AuthController.php
  * Author: Zameel Amjed
  * Date: 3/16/2020
@@ -8,11 +8,14 @@
  */
 
 namespace App\Http\Controllers\API;
-use App\Store;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ResponseController as ResponseController;
-use Tymon\JWTAuth\JWTAuth;
+use Illuminate\Support\Facades\URL;
+use JWTAuth;
+use Tymon\JWTAuth\Contracts\Providers\Auth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator;
 
 
@@ -29,43 +32,41 @@ class AuthController extends ResponseController
     public function login(Request $request)
     {
 	    $validator = Validator::make($request->all(), [
-		    'telephone' => 'required',
-		    'nic' => 'required'
+		    'email' => 'required',
+		    'password' => 'required'
 	    ]);
 
 	    if($validator->fails()){
 		    return $this->sendError($validator->errors());
 	    }
-
-	    $electrician = Store::where('nic','=',$request->input('nic'))->where('telephone','=',$request->input('telephone'))->first();
-		if(!$electrician){
-			return $this->sendError(['error' => 'Unauthorized']);
+		try{
+			if(! $token = JWTAuth::attempt($request->all())){
+				return $this->sendError(['error' => 'invalid_credentials'],401);
+			}else{
+				return $this->respondWithToken($token);
+			}
+		}catch (JWTException $e){
+			return $this->sendError(['error' => 'could_not_create_token'],508);
 		}
 
-	    // Get the token
-	    $token = auth('api')->login($electrician);
-	    //auth('api')->loginUsingId(1);
-	    return $this->respondWithToken($token);
+
     }
 
+    //This Not required as POS do not register new users
     public function signup(Request $request)
     {
-	    $validator = Validator::make($request->all(), [
-		    'name' => 'required',
-		    'nic' => 'required|unique:electricians,nic',
-		    'telephone' => 'required|unique:electricians,telephone',
-	    ]);
+    }
 
-	    if($validator->fails()){
-		    return $this->sendError($validator->errors());
-	    }
-	    $electrician = Store::create($request->all());
 
-	    //new member code
-	    $electrician->setMemberCode();
-
-	    $token = auth('api')->login($electrician);
-	    return $this->respondWithToken($token);
+    public function profile(Request $request){
+		$user = User::find(auth()->id());
+		return response()->json([
+			'data'=>[
+				'user_id' => $user->id,
+				'name' => $user->name,
+				'avatar' => ($user->photo)? URL::to('/images/users/'.$user->photo) : URL::to('/images/users/profile.png')
+			]
+		]);
     }
 
 
@@ -102,9 +103,11 @@ class AuthController extends ResponseController
 	protected function respondWithToken($token)
 	{
 		return response()->json([
-			'access_token' => $token,
-			'token_type' => 'bearer',
-			'expires_in' => auth('api')->factory()->getTTL() * 60
+			'data'=>[
+				'access_token' => $token,
+				'token_type' => 'bearer',
+				'expires_in' => auth('api')->factory()->getTTL() * 60
+			]
 		]);
 	}
 

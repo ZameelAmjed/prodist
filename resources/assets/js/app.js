@@ -26,7 +26,7 @@ Vue.component('AutoInput', require('./components/auto-input.vue').default);
 Vue.component('auto-city', require('./components/auto-city.vue').default);
 Vue.component('auto-bank', require('./components/auto-bank.vue').default);
 Vue.component('auto-sales-demographics', require('./components/auto-sales-demographics.vue').default);
-Vue.component('products-supplier-order', require('./components/products-supplier-order.vue').default);
+Vue.component('products-purchase-order', require('./components/products-purchase-order.vue').default);
 Vue.component('create-order', require('./components/create-order.vue').default);
 Vue.component('edit-order', require('./components/edit-order.vue').default);
 Vue.component('grn-items-update', require('./components/grn-items-update.vue').default);

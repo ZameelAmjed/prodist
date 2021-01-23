@@ -39,7 +39,7 @@ class HomeController extends Controller
 	    $gridData = $reports->dataOrdersSummery('array');
 	    $count->orders = $gridData['orders'];
 	    $count->payments = $gridData['payments'];
-	    $count->supplierOrders = $gridData['supplierOrders'];
+	    $count->purchaseOrders = $gridData['purchaseOrders'];
 	    $count->totalStores = Store::count();
 	    $count->totalInventory = Product::sum('stock');
 	    $count->totalPendingOrders = Order::whereNotNull('delivery_date')->where('status','=','processing')->count();
