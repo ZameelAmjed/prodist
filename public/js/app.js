@@ -37362,7 +37362,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
                   if (data.order_status === 'complete') {
                     //navigate to invoice
-                    window.location.href = this.postOrderUrl + '/invoice/' + data.order_id;
+                    // window.location.href = this.postOrderUrl+'/invoice/'+data.order_id;
+                    // navigate to order
+                    window.location.href = this.postOrderUrl + '/' + data.order_id;
                   }
 
                   this.form.reset();

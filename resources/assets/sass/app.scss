@@ -41,6 +41,12 @@
     height: 40px;
   }
 }
+.app-body {
+  @media screen and (max-width: 900px) {
+    margin-top: 0px;
+  }
+}
+
 .img-thumb-profile{
   max-height: 200px;
 }

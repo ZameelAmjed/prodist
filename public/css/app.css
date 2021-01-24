@@ -343,6 +343,12 @@ button.toast-close-button {
   }
 }
 
+@media screen and (max-width: 900px) {
+  .app-body {
+    margin-top: 0px;
+  }
+}
+
 .img-thumb-profile {
   max-height: 200px;
 }
