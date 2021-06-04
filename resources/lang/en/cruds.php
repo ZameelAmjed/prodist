@@ -1,11 +1,11 @@
 <?php
 
 return [
-	'userManagement' => [
+	'userManagement'    => [
 		'title'          => 'User management',
 		'title_singular' => 'User management',
 	],
-	'permission'     => [
+	'permission'        => [
 		'title'          => 'Permissions',
 		'title_singular' => 'Permission',
 		'fields'         => [
@@ -21,7 +21,7 @@ return [
 			'deleted_at_helper' => '',
 		],
 	],
-	'role'           => [
+	'role'              => [
 		'title'          => 'Roles',
 		'title_singular' => 'Role',
 		'fields'         => [
@@ -39,7 +39,7 @@ return [
 			'deleted_at_helper'  => '',
 		],
 	],
-	'user'           => [
+	'user'              => [
 		'title'          => 'Users',
 		'title_singular' => 'User',
 		'fields'         => [
@@ -66,7 +66,7 @@ return [
 			'deleted_at_helper'        => '',
 		],
 	],
-	'electrician'    => [
+	'electrician'       => [
 		'title'          => 'Electricians',
 		'title_singular' => 'Electrician',
 		'fields'         => [
@@ -101,7 +101,7 @@ return [
 			'code'                     => 'Member Code',
 		],
 	],
-	'products'       => [
+	'products'          => [
 		'title'          => 'Products',
 		'title_singular' => 'Product',
 		'fields'         => [
@@ -118,8 +118,8 @@ return [
 			'distributor_price' => 'Distributor Price',
 			'retail_price'      => 'Retail Price',
 			'brand'             => 'Brand',
-			'stock'            => 'Stock',
-			'code'            => 'Code',
+			'stock'             => 'Stock',
+			'code'              => 'Code',
 			'supplier'          => 'Supplier',
 			'issued'            => 'Units Issued',
 			'active'            => 'Units Active',
@@ -133,7 +133,7 @@ return [
 			'deleted_at_helper' => '',
 		],
 	],
-	'units'          => [
+	'units'             => [
 		'title'          => 'Unit',
 		'title_singular' => 'Units',
 		'fields'         => [
@@ -141,25 +141,25 @@ return [
 			'no_of_units_text' => 'Enter Number of Units',
 		],
 	],
-	'payments'       => [
+	'payments'          => [
 		'title'          => 'Payments',
 		'title_singular' => 'Payment',
 		'fields'         => [
-			'payment_type'               => 'Payment Type',
+			'payment_type'         => 'Payment Type',
 			'created_at'           => 'Created On',
 			'status'               => 'Status',
 			'transfer_type'        => 'Payment Transfer Method',
 			'payed_on'             => 'Payed On',
 			'comment'              => 'Comment',
 			'amount'               => 'Amount',
-			'due_amount'               => 'Due Amount',
-			'cheque_no'               => 'Cheque No',
-			'paid_amount'               => 'Paid Amount',
+			'due_amount'           => 'Due Amount',
+			'cheque_no'            => 'Cheque No',
+			'paid_amount'          => 'Paid Amount',
 			'confirmation_message' => 'Confirmation Message Status',
 			'name_helper'          => '',
 		],
 	],
-	'store'          => [
+	'store'             => [
 		'title'          => 'Stores',
 		'title_singular' => 'Store',
 		'fields'         => [
@@ -188,7 +188,7 @@ return [
 			'deleted_at_helper'     => '',
 		],
 	],
-	'supplier'       => [
+	'supplier'          => [
 		'title'          => 'Suppliers',
 		'title_singular' => 'Supplier',
 		'fields'         => [
@@ -207,28 +207,28 @@ return [
 			'deleted_at_helper'     => '',
 		],
 	],
-	'purchase_order' => [
+	'purchase_order'    => [
 		'title'          => 'Purchase Order',
 		'title_singular' => 'Purchase Orders',
 		'fields'         => [
-			'id'                    => 'ID',
-			'id_helper'             => '',
-			'name'                  => 'Name',
-			'telephone'             => 'Telephone',
-			'supplier_ref_code'     => 'Ref Code',
+			'id'                       => 'ID',
+			'id_helper'                => '',
+			'name'                     => 'Name',
+			'telephone'                => 'Telephone',
+			'supplier_ref_code'        => 'Ref Code',
 			'supplier_ref_code_helper' => 'reference code given by supplier for this purchase order',
-			'city'                  => 'City',
-			'remember_token'        => 'Remember Token',
-			'remember_token_helper' => '',
-			'created_at'            => 'Requested on',
-			'created_at_helper'     => '',
-			'updated_at'            => 'Received/Updated on',
-			'updated_at_helper'     => '',
-			'deleted_at'            => 'Deleted at',
-			'deleted_at_helper'     => '',
+			'city'                     => 'City',
+			'remember_token'           => 'Remember Token',
+			'remember_token_helper'    => '',
+			'created_at'               => 'Requested on',
+			'created_at_helper'        => '',
+			'updated_at'               => 'Received/Updated on',
+			'updated_at_helper'        => '',
+			'deleted_at'               => 'Deleted at',
+			'deleted_at_helper'        => '',
 		],
 	],
-	'order'          => [
+	'order'             => [
 		'title'          => 'Orders',
 		'title_singular' => 'Order',
 		'fields'         => [
@@ -248,11 +248,66 @@ return [
 			'deleted_at_helper' => '',
 		],
 	],
-	'adjustment_charge' =>[
-		'title' => 'Adjustment charges',
+	'adjustment_charge' => [
+		'title'          => 'Adjustment charges',
 		'title_singular' => 'Adjustment charge',
-		'type'       =>[
+		'type'           => [
 			'cheque_return_charge' => 'Cheque return charge'
 		]
-	]
+	],
+	'order_discounts'   => [
+		'title'          => 'Order Discounts',
+		'title_singular' => 'Order Discount',
+		'fields'         => [
+			'id'                => 'ID',
+			'value'             => 'Discount Value',
+			'title'             => 'Title',
+			'title_helper'      => 'Title for the promotional discount e.g. Seasonal Bonanza 2021',
+			'type'              => 'Value Type',
+			'type_helper'       => 'Discount from total bill as fixed value or percentage',
+			'status'            => 'Status',
+			'overvalue'         => 'Over Bill Value',
+			'overvalue_helper'  => 'Appliy if over above bill value',
+			'platform'          => 'Platform',
+			'code'              => 'Code',
+			'code_helper'       => 'Promo Code to provide at checkout',
+			'start_at'          => 'Start from',
+			'start_at_helper'   => 'Start promo from this date',
+			'end_at'            => 'End on',
+			'end_at_helper'     => 'End promo on this date',
+			'created_at'        => 'Requested on',
+			'created_at_helper' => '',
+			'created_by'        => 'Created By',
+			'updated_at'        => 'Received/Updated on',
+			'updated_at_helper' => '',
+			'deleted_at'        => 'Deleted at',
+			'deleted_at_helper' => '',
+		],
+	],
+
+	'product_discounts' => [
+		'title'          => 'Product Discounts',
+		'title_singular' => 'Product Discount',
+		'fields'         => [
+			'id'                       => 'ID',
+			'value'                    => 'Discount Value',
+			'scheme_identifier'        => 'Scheme Identifier',
+			'scheme_identifier_helper' => 'A unique title to identify the discount scheme',
+			'type'                     => 'Value Type',
+			'type_helper'              => 'Discount from total bill as fixed value or percentage',
+			'status'                   => 'Status',
+			'platform'                 => 'Platform',
+			'start_at'                 => 'Start from',
+			'start_at_helper'          => 'Start promo from this date',
+			'end_at'                   => 'End on',
+			'end_at_helper'            => 'End promo on this date',
+			'created_at'               => 'Requested on',
+			'created_at_helper'        => '',
+			'created_by'               => 'Created By',
+			'updated_at'               => 'Received/Updated on',
+			'updated_at_helper'        => '',
+			'deleted_at'               => 'Deleted at',
+			'deleted_at_helper'        => '',
+		],
+	],
 ];

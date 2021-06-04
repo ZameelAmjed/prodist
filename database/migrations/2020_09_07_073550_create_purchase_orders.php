@@ -34,6 +34,6 @@ class CreatePurchaseOrders extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supplier_orders');
+        Schema::dropIfExists('purchase_orders');
     }
 }

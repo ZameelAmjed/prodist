@@ -70,6 +70,30 @@
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link  nav-dropdown-toggle" href="#">
                         {{--<i class="fa-fw fas fa-users nav-icon"></i>--}}
+                        <img class="nav-icon" src="{{asset('images/discount.svg')}}" height="20px">
+                        {{trans('global.discounts')}}
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        {{--@can('super_admin')--}}
+                        <li class="nav-item">
+                            <a href="{{ route("admin.order_discounts.index") }}"
+                               class="nav-link pl-4 {{ request()->is('order_discounts') || request()->is('order_discounts') ? 'active' : '' }}">
+                                <img class="nav-icon-sub" src="{{asset('images/circle.svg')}}">
+                                {{trans('cruds.order_discounts.title')}}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route("admin.product_discounts.index") }}"
+                               class="nav-link pl-4 {{ request()->is('product_discounts') || request()->is('product_discounts') ? 'active' : '' }}">
+                                <img class="nav-icon-sub" src="{{asset('images/circle.svg')}}">
+                                {{trans('cruds.product_discounts.title')}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link  nav-dropdown-toggle" href="#">
+                        {{--<i class="fa-fw fas fa-users nav-icon"></i>--}}
                         <img class="nav-icon" src="{{asset('images/group.svg')}}" height="20px">
                         {{ trans('cruds.userManagement.title') }}
                     </a>

@@ -323,6 +323,7 @@ return [
     'bank_code'                            => 'Bank Code',
     'po_product_form_help_text'            => 'This will create an individual purchase order for the product',
     'grn'                              => 'GRN',
+    'discounts'                              => 'Discounts',
     'banks'                              => [
 	    ["name"=>"Alliance Finance Company PLC"],
 	    ["name"=>"Amana Bank PLC"],

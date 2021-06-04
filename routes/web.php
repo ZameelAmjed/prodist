@@ -16,6 +16,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('users', 'Admin\UsersController');
     Route::resource('products', 'Admin\ProductsController');
     Route::resource('orders', 'Admin\OrderController');
+    Route::resource('order_discounts', 'Admin\OrderDiscountsController');
+    Route::resource('product_discounts', 'Admin\ProductDiscountsController');
     Route::post('orders/return', 'Admin\OrderController@newReturn');
     Route::post('orders/free_issue/{order}', 'Admin\OrderController@freeIssue')->name('orders.freeissue');
 	//  Route::get('payment/receipt/{payment}', 'Admin\PaymentsController@generateReceipt')->name('payment.receipt');

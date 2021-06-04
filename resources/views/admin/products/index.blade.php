@@ -90,7 +90,7 @@
         @slot('links')
             @can('users_manage')
                 <a class="nav-item nav-link mr-5" href="{{route('admin.products.create')}}"><i class="fa fa-plus"></i> {{ trans('global.add') }} {{ trans('cruds.products.title_singular') }}</a>
-                <a class="nav-item nav-link" href="{{route('admin.supplier_order.index')}}"><i class="fa fa-plus"></i> Add Supplier Order</a>
+                <a class="nav-item nav-link" href="{{route('admin.purchase_orders.index')}}"><i class="fa fa-plus"></i> Add Supplier Order</a>
             @endcan
         @endslot
     @endcomponent

@@ -16,13 +16,6 @@ $(document).ready(function () {
   })
 
 
-
-
-
-  $('.timepicker').datetimepicker({
-    format: 'HH:mm:ss'
-  })
-
   $('.select-all').click(function () {
     let $select2 = $(this).parent().siblings('.select2')
     $select2.find('option').prop('selected', 'selected')
@@ -34,7 +27,7 @@ $(document).ready(function () {
     $select2.trigger('change')
   })
 
-  $('.select2').select2()
+  //$('.select2').select2()
 
   $('.treeview').each(function () {
     var shouldExpand = false
@@ -47,4 +40,7 @@ $(document).ready(function () {
       $(this).addClass('active')
     }
   })
+
+
+
 })

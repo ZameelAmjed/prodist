@@ -115,3 +115,20 @@ th.gap{
   90% { transform: translate(1px, 2px) rotate(0deg); }
   100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
+
+span.tag-head{
+  font-weight: bold;
+  &:after {
+    content: ": ";
+  }
+}
+
+.input-group-append{
+  height: 36px;
+}
+.form-datepicker > input{
+  @extend .form-control;
+}
+.form-datepicker.error > input{
+  @extend .has-error;
+}

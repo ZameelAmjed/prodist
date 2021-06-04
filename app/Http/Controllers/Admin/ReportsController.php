@@ -9,6 +9,8 @@ use App\Http\Controllers\Exports\ElectricianExport;
 use App\Http\Controllers\Exports\ProductsExport;
 use App\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Collection;
@@ -123,20 +125,24 @@ class ReportsController extends Controller
 
 		$query->select('orders.invoice_no','stores.business_name','payments.payment_amount','payments.payment_type', 'payments.created_at','payments.realize_date');
 
-		$payments = $query->paginate(100);
+		//Clone to avoid calling same queries
+		$totalQuery = clone $query;
+
+		$payments = $query->paginate(10);
 
 		//Get Total Value
-		$query->select(DB::raw('SUM(payments.payment_amount) as total'));
-		$sum = $query->get()->pluck('total');
+		$totalQuery->select(DB::raw('SUM(payments.payment_amount) as total'));
+		$sum = $totalQuery->get()->pluck('total');
 		$total = ($sum) ? $sum[0] :0;
 
 		return view('admin.reports.payments',compact('payments','total'));
 	}
 
 	public function getDuePayments(Request $request){
+		//:todo left join payments colomn
 		//USING COMMON TEMPLATE
 		$query = DB::table('orders')
-		->join('payments',function($join){
+		->leftJoin('payments',function($join){
 			$join->on('orders.id','=','payments.order_id')->where('payments.status','=','accept');
 		})
 		->join('stores','orders.store_id','=','stores.id')
@@ -151,7 +157,7 @@ class ReportsController extends Controller
 		->where('orders.status','=','processing');
 		
 		//Date Range only if set 
-		if(request('date_start')&&request('date_end')){
+		if(request('date_start') && request('date_end')){
 			$query->whereBetween('orders.created_at',[request('date_start'), request('date_end')]);
 		}
 
@@ -162,7 +168,10 @@ class ReportsController extends Controller
 
 
 		$query->groupby('orders.invoice_no','stores.business_name','orders.total_amount','orders.return_amount');
+
+
 		$items = $query->paginate(10);
+		//dd($query);
 		$info['pagename'] = 'Due Payments';
 
 		return view('admin.reports.common',compact('items','info'));

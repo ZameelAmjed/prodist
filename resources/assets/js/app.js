@@ -37,6 +37,7 @@ Vue.component('returns-modal', require('./components/returns-order-modal.vue').d
 Vue.component('empty-results', require('./components/empty-results.vue').default);
 Vue.component('bulk-payment', require('./components/bulk-payment.vue').default);
 Vue.component('payments-home-tabs', require('./components/payments-home-tabs.vue').default);
+Vue.component('date-range-picker', require('./components/date-range-picker.vue').default);
 Vue.use(VueBarcodeScanner,{sound:true});
 
 Vue.component(HasError.name, HasError)
@@ -53,11 +54,12 @@ const app = new Vue({
         supplier:window.__FORM__ ||'1',
         showModal: false,
         returnsModal: false,
+        toggle:1,
     },
-    method:{
-        foo(x){
-           alert()
-        }
+    methods: {
+        foo(x) {
+            alert()
+        },
     }
 });
 
