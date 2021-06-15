@@ -38,6 +38,8 @@ Vue.component('empty-results', require('./components/empty-results.vue').default
 Vue.component('bulk-payment', require('./components/bulk-payment.vue').default);
 Vue.component('payments-home-tabs', require('./components/payments-home-tabs.vue').default);
 Vue.component('date-range-picker', require('./components/date-range-picker.vue').default);
+Vue.component('product-discount-ids', require('./components/product-discount-ids.vue').default);
+Vue.component('product-discount-update', require('./components/product-discount-update.vue').default);
 Vue.use(VueBarcodeScanner,{sound:true});
 
 Vue.component(HasError.name, HasError)

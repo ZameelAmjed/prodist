@@ -8859,3 +8859,34 @@ span.tag-head:after {
   height: 36px;
 }
 
+.tag {
+  border-color: #3097D1;
+  color: #3097D1;
+  border-radius: 3px;
+  border: 1px solid #3097D1;
+  background-color: transparent;
+}
+
+.tag.label-danger {
+  border-color: #bf5329;
+  color: #bf5329;
+  border: 1px solid #bf5329;
+}
+
+.tag button {
+  color: #3097D1;
+}
+
+.tag.label-danger button {
+  color: #bf5329;
+}
+
+.tag span {
+  font-size: 12px !important;
+}
+
+.has-error div .autocomplete .autocomplete__box,
+.form-datepicker.error > input div .autocomplete .autocomplete__box {
+  border-color: #a94442;
+}
+

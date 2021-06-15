@@ -11,6 +11,7 @@ namespace App\Http\Controllers\API;
 
 use App\Location;
 use App\Product;
+use App\ProductDiscount;
 use App\Store;
 use Dotenv\Regex\Regex;
 use Illuminate\Http\Request;
@@ -69,8 +70,10 @@ class HelperApiController extends ResponseController
 
 		if($request->get('q')){
 			$q = $request->get('q');
-			$data = Product::where('name','like',"%{$q}%")
+			$data = Product::with('productDiscounts')
+			               ->where('name','like',"%{$q}%")
 			               ->get();
+
 			return response()->json($data);
 		}
 	}

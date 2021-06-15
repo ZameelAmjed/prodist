@@ -4,6 +4,7 @@ namespace App;
 
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -26,6 +27,18 @@ class Product extends Model
 
 	public function purchaseOrderItems(){
 		return $this->hasMany('App\PurchaseOrderItems');
+	}
+
+	/**
+	 * @return $this
+	 * Get discount for the product
+	 */
+	public function productDiscounts(){
+		$today = Carbon::parse();
+		return $this->hasMany('App\ProductDiscount')
+			->where('start_at','<',$today )
+			->where('end_at','>',$today )
+			->where('status','active' );
 	}
 
 	public function supplier(){

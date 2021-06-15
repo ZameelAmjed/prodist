@@ -132,3 +132,33 @@ span.tag-head{
 .form-datepicker.error > input{
   @extend .has-error;
 }
+
+.tag {
+  border-color: $brand-primary;
+  color: $brand-primary;
+  border-radius: 3px;
+  border: 1px solid $brand-primary;
+  background-color: transparent;
+}
+
+.tag.label-danger {
+  border-color: $brand-danger;
+  color: $brand-danger;
+  border: 1px solid $brand-danger;
+}
+
+.tag button{
+  color: $brand-primary;
+}
+
+.tag.label-danger button{
+  color: $brand-danger;
+}
+
+.tag span{
+  font-size: 12px !important;
+}
+
+.has-error div .autocomplete .autocomplete__box{
+  border-color: #a94442;
+}
