@@ -6,6 +6,7 @@ Auth::routes(['register' => false]);
 // Change Password Routes...
 Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
 Route::patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
+Route::get('/image/product/{product}','ImageController@showImage');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
@@ -26,6 +27,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('orders/invoice/{order}', 'Admin\OrderController@getInvoice')->name('orders.invoice');
     Route::resource('suppliers', 'Admin\SuppliersController');
     Route::get('purchase_orders/{purchaseOrder}/grn', 'Admin\PurchaseOrderController@grn')->name('purchase_orders.grn');
+    Route::post('purchase_orders/{purchaseOrder}/quickgrn', 'Admin\PurchaseOrderController@quickgrn')->name('purchase_orders.quickgrn');
 	Route::resource('purchase_orders', 'Admin\PurchaseOrderController');
 
 	Route::get('payment/returncharges', 'Admin\PaymentController@returnChargeView')
@@ -52,5 +54,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 	Route::get('reports/purchase_orders', 'Admin\ReportsController@getPurchaseOrders')->name('reports.purchase_orders');
 	Route::get('reports/stores_long_due', 'Admin\ReportsController@getStoresDuePayments')->name('reports.stores_long_due');
 	Route::get('help', 'HomeController@help')->name('help');
-	});
+
+	//image upload
+	Route::post('image/upload','ImageController@uploadImage')->name('image.upload');
+	Route::patch('image/upload','ImageController@deleteImage')->name('image.upload');
+});
 

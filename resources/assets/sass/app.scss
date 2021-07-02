@@ -162,3 +162,12 @@ span.tag-head{
 .has-error div .autocomplete .autocomplete__box{
   border-color: #a94442;
 }
+.bg-outline{
+    border: 1px solid;
+    color:inherit;
+    background-color: transparent;
+  }
+.badge-transparent{
+  color:inherit;
+  background-color: transparent;
+}

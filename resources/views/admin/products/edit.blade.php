@@ -59,6 +59,9 @@
                 <label for="distributor_price">{{ trans('cruds.products.fields.distributor_price') }}</label>
                 <input class="form-control col-2" name="distributor_price" id="distributor_price" type="number" step="0.01" value="{{ old('distributor_price', isset($product) ? $product->distributor_price : '') }}">
             </div>
+            <div class="form-group">
+                <upload-product-image type="editProduct" :product_id="{{$product->id}}" :images="{{ json_encode(App\Product::getImageList($product->id, false))}}"></upload-product-image>
+            </div>
             <div class="form-group {{ $errors->has('supplier_id') ? 'has-error' : '' }}">
                 <label for="supplier_id">{{ trans('cruds.products.fields.supplier') }}</label>
                 <select name="supplier_id" class="form-control">

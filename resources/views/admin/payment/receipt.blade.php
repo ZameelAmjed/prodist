@@ -96,7 +96,7 @@
     @endphp
     @foreach($payment->order->products as $key=>$product)
         @php
-            $discount = (($product->item->unit_price*$product->item->qty)*($product->item->discount/100));
+            $discount = (($product->item->unit_price * $product->item->qty) - $product->item->sub_total);
             $totalSave += $discount;
         @endphp
     @endforeach
@@ -108,8 +108,8 @@
         <td align="right">@currency($payment->order->subtotal_amount)</td>
     </tr>
     <tr>
-        <td align="left">Total Discounts</td>
-        <td align="right">@currency($totalSave+$payment->order->subtotal_amount*($payment->order->discount/100))</td>
+        <td align="left">Total All Discounts</td>
+        <td align="right">@currency($totalSave + ($payment->order->subtotal_amount - $payment->order->total_amount))</td>
     </tr>
     <tr>
         <td align="left" class="gray">Total Order Amount</td>

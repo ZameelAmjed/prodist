@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\ReportsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
+use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
@@ -66,5 +69,26 @@ class HomeController extends Controller
 		}
 
 	}
+
+
+	public function uploadImage(Request $request){
+
+		$imageName = time().'.'.$request->file->getClientOriginalExtension();
+		//if new item create a temp folder
+		if($request->get('type')==='newProduct'){
+			$request->file->move(public_path('tempimage'), $imageName);
+		}
+		return response()->json(['data'=>$imageName,'success'=>'You have successfully upload file.']);
+	}
+
+
+	public function deleteImage(Request $request){
+		//delete file
+		if(File::delete(public_path('tempimage/'.$request->get('filename')))){
+			return response()->json(['data'=>$request->all(),'success'=>'Your file deleted.']);
+		}
+	}
+
+	
 
 }

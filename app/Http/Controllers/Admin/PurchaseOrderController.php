@@ -217,6 +217,30 @@ class PurchaseOrderController extends Controller {
 
 	}
 
+
+	public function quickgrn( purchaseOrder $purchaseOrder, Request $request){
+		if(!($request->session()->get('secret')===$request->get('secret')))
+			return abort(404);
+
+		//mark all items recived
+		$data['invoice_no'] = 'QGRN-'.$purchaseOrder->id;
+		$i = 0;
+
+		foreach ($purchaseOrder->purchaseOrderItems as $item){
+			$data['purchase_order_item_id'][$i] = $item->id;
+			$data['received_units'][$i] = $item->requested_units;
+			$data['unit_price'][$i] = $item->product->distributor_price;
+		}
+
+		$newRequest = new Request();
+		$newRequest->merge($data);
+
+		$this->update($newRequest, $purchaseOrder);
+
+		return redirect()->back()->with('success','GRN successfully created for the purchase order');
+
+	}
+
 	/**
 	 * Remove the specified resource from storage.
 	 *

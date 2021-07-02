@@ -6,6 +6,8 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -38,7 +40,8 @@ class Product extends Model
 		return $this->hasMany('App\ProductDiscount')
 			->where('start_at','<',$today )
 			->where('end_at','>',$today )
-			->where('status','active' );
+			->where('status','active' )
+			->orderBy('eligible_qty');
 	}
 
 	public function supplier(){
@@ -51,6 +54,26 @@ class Product extends Model
 
 	public function getUpdatedAtAttribute($value){
 		return date('Y-m-d', strtotime($value));
+	}
+
+
+	public static function getImageList($id, $nameonly = true ):array{
+		if(is_dir(public_path('product/'.$id))){
+			$files = [];
+			foreach(File::files(public_path('product/'.$id)) as $path) {
+				$file = pathinfo($path);
+				$url = "product/$id/{$file['filename']}.{$file['extension']}";
+				if($nameonly){
+					array_push($files, $url);
+				}else{
+					$file['url'] = $url;
+					$file['size'] = filesize($path);
+					array_push($files, $file);
+				}
+			}
+			return $files;
+		}
+		return [];
 	}
 
 }

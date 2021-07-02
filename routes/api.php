@@ -15,6 +15,8 @@ Route::group([ 'prefix' => 'auth'], function (){
 Route::group(['middleware' => 'auth:api'], function() {
 	Route::get('products', 'API\CommonApiController@findProducts');
 	Route::get('customer', 'API\CommonApiController@getCustomer');
+	Route::post('discounts', 'API\CommonApiController@getDiscounts');
+	Route::post('placeorder', 'API\CommonApiController@placeOrder');
 });
 
 Route::get('getarea','API\HelperApiController@getAreas');

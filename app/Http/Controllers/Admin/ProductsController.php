@@ -10,7 +10,9 @@ use App\Product;
 use App\PurchaseOrder;
 use App\Supplier;
 use App\User;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
@@ -79,6 +81,9 @@ class ProductsController extends Controller
 		}
 
 		$product = Product::create($request->all());
+
+		//if files available
+		$this->moveImageFromTemp($product, $request->get('files',null));
 
 		return redirect()->route('admin.products.show',[$product->id])->with('message',"$product->name ".trans('global.is_created'));
 	}
@@ -163,7 +168,10 @@ class ProductsController extends Controller
 	                                 ->get()->pluck('id');
 	    $completedPurchaseOrders = PurchaseOrder::find($completedPurchaseOrderIds);
 
-	    return view('admin.products.show', compact('product','pendingPurchaseOrders','completedPurchaseOrders'));
+	    $secret = md5(uniqid());
+	    request()->session()->flash('secret', $secret);
+
+	    return view('admin.products.show', compact('product','pendingPurchaseOrders','completedPurchaseOrders','secret'));
     }
 
     /**
@@ -201,6 +209,27 @@ class ProductsController extends Controller
     public function find(Request $request){
     	$products = Product::where('code','like','%'.$request->get('keyword').'%')->get();
     	return response()->json(['data'=>$products->toJson()]);
+    }
+
+
+	/**
+	 * @param $files
+	 * @param Product $product
+	 */
+    public function moveImageFromTemp(Product $product, $files){
+	    if($files){
+		    //try catch
+		    try{
+			    foreach ($files as $file){
+				    $path = public_path('product/'.$product->id);
+				    File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+				    File::move(public_path('tempimage'.'/'.$file), $path.'/'.$file);
+			    }
+		    }catch (Exception $ex){
+
+		    }
+
+	    }
     }
 
 

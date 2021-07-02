@@ -40,6 +40,7 @@ Vue.component('payments-home-tabs', require('./components/payments-home-tabs.vue
 Vue.component('date-range-picker', require('./components/date-range-picker.vue').default);
 Vue.component('product-discount-ids', require('./components/product-discount-ids.vue').default);
 Vue.component('product-discount-update', require('./components/product-discount-update.vue').default);
+Vue.component('upload-product-image', require('./components/upload-product-image.vue').default);
 Vue.use(VueBarcodeScanner,{sound:true});
 
 Vue.component(HasError.name, HasError)

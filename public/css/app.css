@@ -8890,3 +8890,14 @@ span.tag-head:after {
   border-color: #a94442;
 }
 
+.bg-outline {
+  border: 1px solid;
+  color: inherit;
+  background-color: transparent;
+}
+
+.badge-transparent {
+  color: inherit;
+  background-color: transparent;
+}
+
